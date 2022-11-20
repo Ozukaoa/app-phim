@@ -15,6 +15,8 @@ import MovieDetails from './components/MovieDetails/MovieDetails';
 import CarouselFilm from './components/CarouselFilm/CarouselFilm';
 import MoviePlay from './components/MoviePlay/MoviePlay';
 import Sidebar from './components/Account/Sidebar';
+import Search from './components/Home/Search';
+
 
 
 function App() {
@@ -28,6 +30,7 @@ function App() {
         <div className="container">
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/search" component={Search} />
             <Route exact path="/movie/:imdbID" component={MovieDetails} />
             <Route exact path="/movie/:imdbID/play" component={MoviePlay} />
             {/* <Route component={PageNotFound} /> */}

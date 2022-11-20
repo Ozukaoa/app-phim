@@ -6,6 +6,7 @@ import InputOTP from "./InputOTP";
 import Login from "./Login";
 import LoginKey from "./LoginKey";
 import NewPass from "./NewPass";
+import Register from "./Register";
 
 const SetPage =(props)=>{
   const [tab, setTab] = useState(props.first);
@@ -18,6 +19,9 @@ const SetPage =(props)=>{
     const tabList = {
         login: {
           component: Login,
+        },
+        register: {
+          component: Register,
         },
         loginKey: {
             component: LoginKey

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { APIKEY } from '../../common/API/MovieApiKey';
 import movieAPI from '../../common/API/movieAPI';
+import axios from "axios";
 
 // asyncthunkfor movies-This is an async action creator
 export const fetchAsyncMovies = createAsyncThunk('movies/fetchAsyncMovies', async (term) => {
@@ -17,6 +18,10 @@ export const fetchAsyncMovieOrShowDetail = createAsyncThunk('movies/fetchAsyncMo
     const response = await movieAPI.get(`?apikey=${APIKEY}&i=${id}&plot=full`)
     return response.data;
 });
+export const dataHomePage = axios.get("http://localhost:3003/apis/homePage")
+        .then(response=>{
+            console.log(response,"111")
+        })
 // states
 const initialState = {
     movies: {},

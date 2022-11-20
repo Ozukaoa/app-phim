@@ -93,7 +93,7 @@ const InfoFilm = (props) => {
             <div>
               {props.data?.category?.map((val,index)=>{
                 return <Button className='Button-cate'>
-                  {val}
+                  {val?.theLoai}
                 </Button>
               })}
           
@@ -101,7 +101,7 @@ const InfoFilm = (props) => {
             <div className='describe'>
                 {props.data.describe}
             </div>
-            <div>
+            <div style={{display:"flex"}}>
             <Link to={`/movie/2/play`}>
           <span className='img' onClick={{}}><img src={play} ></img></span>
               </Link>

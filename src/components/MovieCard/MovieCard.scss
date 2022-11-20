@@ -7,17 +7,23 @@
   margin: 9px;
   padding: 9px;
 }
-.card-item:hover {
-  transform: scale(1.1);
-}
+// .card-item:hover {
+//   transform: scale(1.1);
+// }
 .card-top {
   // height: 415px;
+  width: 100%;
   span{
     position: absolute;
+    
     top: 7%;
-    margin-left: 180px;
-    font-size: 40px;
+    font-size: 2rem;
     color: #fbff00f0;
+  }
+
+  svg{
+    position: relative;
+    right: 78px;
   }
 
 }

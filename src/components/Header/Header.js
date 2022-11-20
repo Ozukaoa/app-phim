@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { fetchAsyncMovies, fetchAsyncShows } from '../../features/movies/movieSlice';
 import user from '../../images/user.png';
 import logo from '../../images/logo/logo.png';
@@ -12,6 +12,7 @@ import SetPage from '../Login/SetPage';
 
 
 const Header = () => {
+    const history = useHistory();
 
     const [modalLogin,setModalLogin]= useState(false)
 
@@ -27,6 +28,13 @@ const Header = () => {
 
     const [term, setTerm] = useState("");
     const dispatch = useDispatch();
+
+    useEffect(()=>{
+        console.log(term)
+        history.push("/search")
+        localStorage.setItem("search",term)
+        
+    },[term])
 
     const handleChange = (event) => {
         const { value } = event.target;
@@ -51,20 +59,36 @@ const Header = () => {
     setOpen(newOpen);
   };
 
-    const content = (
+  const LogOut =()=>{
+    localStorage.removeItem("accessToken")
+  }
+
+    const contentLogin = (
         <>
-        <div>
-        <Link to={`/account`} onClick={hide}>
-          <a className='click'>Thông tin tài khoản</a>
-          </Link>
-          </div>
-     
-          <div>
-          <a className='click' onClick={openLogin}>Đăng nhập</a>
-        </div>
+             <div>
+                <a className='click' onClick={openLogin}>Đăng nhập</a>
+            </div>
         </>
+    )
+    const contentLogout =(
+        <>
+            <div>
+            
+            <Link to={`/account`} onClick={hide}>
+              <a className='click'>Thông tin tài khoản</a>
+              </Link>
+              </div>
+              <div>
+              <Link to={`/`} onClick={hide}>
+                <a className='click' onClick={LogOut}>Đăng xuất</a>
+                </Link>
+            </div>
+        </>
+    )
         
-      );
+
+    
+
 
 
     return (
@@ -106,7 +130,7 @@ const Header = () => {
             /> */}
             <Popover 
                 placement="bottom"  
-                content={content} 
+                content={localStorage.getItem("accessToken")?contentLogout:contentLogin} 
                 trigger="click"
                 open={open}
                 onOpenChange={handleOpenChange}

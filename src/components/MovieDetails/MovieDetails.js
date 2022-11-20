@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { fetchAsyncMovieOrShowDetail } from '../../features/movies/movieSlice'
@@ -14,12 +14,13 @@ import { Button, Col, Row,Table,Tabs  } from 'antd'
 import Tab_Ep from './Tab_Ep/Tab_Ep'
 import Tab_Actor from './Tab_Actors/Tab_Actor'
 import Tab_Comment from './Tab_Comment/Tab_Comment'
+import axios from 'axios'
 
 
 
 const MovieDetails = () => {
 
-
+    const [dataFilm,setDataFilm] = useState({})
 
     const { imdbID } = useParams();
     // later callling after useEffect
@@ -29,11 +30,21 @@ const MovieDetails = () => {
     // the above part
 
     useEffect(() => {
+        
+        console.log(imdbID)
         dispatch(fetchAsyncMovieOrShowDetail(imdbID))
         return () => {
             dispatch(removeMovieOrShow())
         }
     }, [dispatch, imdbID])
+
+    useEffect(()=>{
+        axios.get(`http://localhost:3003/apis/film/show/id/${imdbID}`)
+        .then(response=>{
+            console.log(response,"111")
+            setDataFilm(response.data)
+        })
+    },[])
 
     const onChange = (key) => {
         console.log(key);
@@ -42,17 +53,17 @@ const MovieDetails = () => {
       const items = [
         { label: 'Chọn tập', key: 'item-1', children: (<Tab_Ep/>) }, // remember to pass the key prop
         { label: 'Xem trailer', key: 'item-2', children: <Tab_Comment/> },
-        { label: 'Diễn viên', key: 'item-3', children: <Tab_Actor/> },
+        { label: 'Diễn viên', key: 'item-3', children: <Tab_Actor data={dataFilm?.dienVien}/> },
         { label: 'Bình luận', key: 'item-4', children: <Tab_Comment/> },
       ];
 
     const movie={
         background_image:"../../images/background-film/image1.png",
-        nameMovie:"I told sunset about you",
-        starScore: 9.8,
-        category:["Thái Lan","Tình bạn"],
-        describe:"(I Told Sunset About You) kể về câu chuyện của Teh (Billkin Putthipong Assaratanakul) và Oh-aew (PP Krit Amnuaydechkorn), họ đã từng là bạn thân trong quá khứ, cho đến khi một sự việc đã biến họ thành đối thủ của nhau....",
-        year:"2020",
+        nameMovie:dataFilm?.tenPhim,
+        starScore: dataFilm?.danhGiaPhim,
+        category:dataFilm?.theLoai,
+        describe: dataFilm?.moTa,
+        year:dataFilm?.ngayChieu?.slice(0,4),
         quantityEp:10,
     }
       

@@ -11,6 +11,10 @@ const Login = (props) => {
     const changeTab=()=>{
         props.changeTab("loginKey")
     }
+
+    const changeTab1=()=>{
+        props.changeTab("register")
+    }
     
     return (
        <>
@@ -31,7 +35,9 @@ const Login = (props) => {
                         <span style={{marginTop:"5px"}}>Đăng nhập bằng facebook</span>
             </div>
 
-            <div style={{marginTop:"20px"}}>Bạn chưa có tài khoản ? <span style={{color:"green",fontWeight:"600"}}> Đăng ký</span></div>
+            <div style={{marginTop:"20px"}}>Bạn chưa có tài khoản ? 
+                <span style={{color:"green",fontWeight:"600",cursor:"pointer"}} onClick={changeTab1}> Đăng ký</span>
+            </div>
             </>
     )
 }

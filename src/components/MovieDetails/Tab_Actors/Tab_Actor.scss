@@ -3,8 +3,10 @@
     height: 430px;
     background-color: #888787;
     padding: 10px;
+    margin: 10px;
+    border-radius: 4px;
 
-    .anticon svg{
+    .anhdd .anticon svg{
         font-size: 100px;
     }
 
@@ -34,12 +36,22 @@
             color: #FFFFFF;
         }
         
+        span{
+            top: 13%;
+    font-size: 1.5rem;
+        
+        }
+
+        svg{
+            right: 110%;
+            
+        }
     }
 }
 
 .tab_act{
     display: grid;
     /* grid-template-columns: 25% 25% 25% 25%; */
-    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    grid-template-columns: repeat(auto-fit,minmax(353px,1fr));
 
 }

@@ -5,6 +5,7 @@ import MovieListing from '../MovieListing/MovieListing';
 import { useDispatch } from 'react-redux';
 import { fetchAsyncMovies, fetchAsyncShows } from '../../features/movies/movieSlice';
 import CarouselFilm from '../CarouselFilm/CarouselFilm';
+import axios from 'axios';
 
 
 
@@ -12,11 +13,16 @@ import CarouselFilm from '../CarouselFilm/CarouselFilm';
 const Home = () => {
     const dispatch = useDispatch();
     const defaultMovie = "Dumb";
-    const defaultShow = "game"
+    const defaultShow = "game";
+    const dataHomePage =()=> axios.get("http://localhost:3003/apis/homePage")
+        .then(response=>{
+            console.log(response,"111")
+        })
     useEffect(() => {
         dispatch(fetchAsyncMovies(defaultMovie))
         dispatch(fetchAsyncShows(defaultShow))
-    }, [dispatch])
+        dataHomePage()
+    }, [])
 
     return (
         <div className='home'>

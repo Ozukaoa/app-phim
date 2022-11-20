@@ -14,7 +14,7 @@ const MovieCard = ({ data },props) => {
     }
     return (
         <div className='card-item'>
-            <Link to={`/movie/${data?.imdbID}`}>
+            <Link to={`/movie/${data?.idPhim}`}>
                 <div className="card-inner">
                     <div className="card-top">
                         <img src={
@@ -26,8 +26,8 @@ const MovieCard = ({ data },props) => {
                     </div>
                     {!props.detail&&<div className="card-bottom">
                         <div className="card-info">
-                            <h3>{data?.Title}</h3>
-                            <p>{data?.Year}</p>
+                            <h3>{data?.tenPhim}</h3>
+                            {/* <p>{data?.Year}</p> */}
                         </div>
                     </div>}
                 </div>

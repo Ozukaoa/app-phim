@@ -5,7 +5,7 @@ import './Tab_Actor.scss';
 import { Col, Row } from 'antd';
 import MovieCard from '../../MovieCard/MovieCard';
 
-const Tab_Actor=()=>{
+const Tab_Actor=(props)=>{
 
     const listactors=[
         {image:img
@@ -21,13 +21,13 @@ const Tab_Actor=()=>{
 
     return (
         <div className='tab_act'>
-    {listactors.map((value,index)=>{
+    {props.data.map((value,index)=>{
         return (
             <div className='actor' key={index}>
                 <Row>
-                    <Col span={8}><GithubOutlined /></Col>
+                    <Col span={8} className="anhdd"><GithubOutlined /></Col>
                     <Col span={16}>
-                        <div className='name'> Peter Quill</div>
+                        <div className='name'> {value?.tenDienVien}</div>
                         <div className='dv'>Diễn viên</div>
                     </Col>
                 </Row>

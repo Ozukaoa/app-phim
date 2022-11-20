@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getAllMovies, getAllShows } from '../../features/movies/movieSlice';
 import MovieCard from '../MovieCard/MovieCard';
@@ -6,9 +6,20 @@ import './MovieListing.scss';
 import { settings } from '../../common/setting.js';
 
 import Slider from "react-slick";
+import axios from 'axios';
 
 const MovieListing = () => {
 
+    const [dataHome,setDataHome] =useState([])
+    
+
+    useEffect(()=>{
+        axios.get("http://localhost:3003/apis/homePage")
+        .then(response=>{
+            console.log(response,"111")
+            setDataHome(response.data)
+        })
+    },[])
 
     // for movies
     const movies = useSelector(getAllMovies)
@@ -25,7 +36,7 @@ const MovieListing = () => {
 
                 <div className='movie-container'>
                     <Slider {...settings}>
-                        {renderMovies === "True" ? movies.Search.map((movie, index) => {
+                        {renderMovies === "True" ? dataHome["phimDanhGiaCao"]?.map((movie, index) => {
                             return < MovieCard key={index} data={movie} />
                         }) : <div className='movies-error' ><h2>{movies.Error}</h2></div>}
                     </Slider>
