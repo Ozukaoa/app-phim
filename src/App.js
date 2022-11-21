@@ -32,7 +32,7 @@ function App() {
             <Route exact path="/" component={Home} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/movie/:imdbID" component={MovieDetails} />
-            <Route exact path="/movie/:imdbID/play" component={MoviePlay} />
+            <Route exact path="/movie/play/:id" component={MoviePlay} />
             {/* <Route component={PageNotFound} /> */}
           </Switch>
          

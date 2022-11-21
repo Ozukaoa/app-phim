@@ -32,11 +32,11 @@ const MovieListing = () => {
     return (
         <div className='movie-wrapper'>
             <div className="movie-list">
-                <h2>Movies</h2>
+                <h2>Phim Hay</h2>
 
                 <div className='movie-container'>
                     <Slider {...settings}>
-                        {renderMovies === "True" ? dataHome["phimDanhGiaCao"]?.map((movie, index) => {
+                        {renderMovies === "True" ? dataHome["phimHay"]?.map((movie, index) => {
                             return < MovieCard key={index} data={movie} />
                         }) : <div className='movies-error' ><h2>{movies.Error}</h2></div>}
                     </Slider>
@@ -44,6 +44,30 @@ const MovieListing = () => {
 
             </div>
             <div className="movie-list">
+                <h2>Phim Hot</h2>
+
+                <div className='movie-container'>
+                    <Slider {...settings}>
+                        {renderMovies === "True" ? dataHome["phimHot"]?.map((movie, index) => {
+                            return < MovieCard key={index} data={movie} />
+                        }) : <div className='movies-error' ><h2>{movies.Error}</h2></div>}
+                    </Slider>
+                </div>
+
+            </div>
+            <div className="movie-list">
+                <h2>Phim Mới</h2>
+
+                <div className='movie-container'>
+                    <Slider {...settings}>
+                        {renderMovies === "True" ? dataHome["phimMoi"]?.map((movie, index) => {
+                            return < MovieCard key={index} data={movie} />
+                        }) : <div className='movies-error' ><h2>{movies.Error}</h2></div>}
+                    </Slider>
+                </div>
+
+            </div>
+            {/* <div className="movie-list">
                 <h2>Shows</h2>
                 <div className='movie-container'>
                     <Slider {...settings}>
@@ -52,7 +76,7 @@ const MovieListing = () => {
                         }) : <div className='movies-error' ><h2>{movies.Error}</h2></div>}
                     </Slider>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

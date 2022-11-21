@@ -29,9 +29,13 @@ const Header = () => {
     const [term, setTerm] = useState("");
     const dispatch = useDispatch();
 
+    
     useEffect(()=>{
         console.log(term)
-        history.push("/search")
+        if(term){
+            history.push("/search")
+        }
+       
         localStorage.setItem("search",term)
         
     },[term])
@@ -61,6 +65,7 @@ const Header = () => {
 
   const LogOut =()=>{
     localStorage.removeItem("accessToken")
+    localStorage.removeItem("infoUser")
   }
 
     const contentLogin = (

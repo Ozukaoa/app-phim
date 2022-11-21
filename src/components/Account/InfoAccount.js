@@ -1,10 +1,60 @@
-import { Button, Col, Row } from "antd"
-import React from "react"
+import { Button, Col, Form, Input, Modal, notification, Row } from "antd"
+import axios from "axios"
+import React, { useEffect, useState } from "react"
 import user from "../../images/user.png"
 
 
 const InfoAccount =() =>{
 
+    const [openModal,setOpenModal] =useState(false)
+    const [infoUser,setInfoUser] = useState({})
+    const handleOpenModal =()=>{
+        setOpenModal(true)
+    }
+    const closeModal=()=>{
+        setOpenModal(false)
+    }
+
+    
+    useEffect(()=>{
+        axios.get(`http://localhost:3003/apis/user/show/info/${localStorage.getItem("infoUser")}`)
+        .then(response=>{
+            console.log(response,"user")
+            if(response.status===200){
+               setInfoUser(response.data[0])
+                
+            }
+        
+                
+        })
+    },[])
+
+    const onFinish = (values) => {
+        console.log('Success:', values);
+
+        axios.get(`http://localhost:3003/apis//show/info/${localStorage.getItem("infoUser")}`)
+            .then(response=>{
+                console.log(response)
+                if(response.status===200){
+                   setInfoUser(response.data)
+                    // localStorage.setItem("accessToken",response.data)
+                    notification.success({
+                    message:"Tạo tài khoản thành công"
+                })
+                }
+            
+                    
+            })
+            
+            .catch(error =>{
+                notification.error({
+                    message:"Tài khoản hoặc mật khẩu sai"
+                })
+            })
+      };
+      const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+      };
 
     return (
         <>
@@ -18,24 +68,27 @@ const InfoAccount =() =>{
                         <Row>
                             <Col span={2}><img src={user}></img> </Col>
                             <Col span={18}><span className="bt1">
-                                <div>User 1004</div>
+                                <div>{infoUser.idNguoiDung}</div>
                                 <div>
                                 <Row>
                                     <Col span={11}>
                                     <span className="thin">Giới tính: </span>
-                                        <span>Chưa được thiết lập</span>
+                                        <span>{infoUser.gioiTinh===null?
+                                        "Chưa được thiết lập":
+                                        infoUser.gioiTinh
+                                        }</span>
                                     </Col>
                                     <Col span={2}>|</Col>
                                     <Col span={11}>
                                     <span className="thin">Ngày sinh: </span>
-                                        <span>Chưa được thiết lập</span>
+                                        <span>{infoUser.ngaySinh??"Chưa được thiết lập"}</span>
                                     </Col>
                                 </Row>
                                 </div>
                             </span>
                             </Col>
                             <Col span={2} className="bt3">
-                                <Button className="btn">Chỉnh sửa</Button>
+                                <Button className="btn" onClick={handleOpenModal}>Chỉnh sửa</Button>
                             </Col>
                         </Row>
                     
@@ -66,7 +119,7 @@ const InfoAccount =() =>{
 
                     <div >
                         <div className="start">
-                            Email &ensp;<span className="bold">thanhluan@gmail.com</span>
+                            Email &ensp;<span className="bold">{infoUser.email}</span>
                             <div className="end" onClick={{}}>Chỉnh sửa</div>
                         </div>
                         
@@ -102,7 +155,95 @@ const InfoAccount =() =>{
                    
                 </div>
             </div>
-            
+
+            <Modal
+          open={openModal}
+          title=""
+          width={400}
+          footer={false}
+          onCancel={closeModal}
+          className="modal"
+        >
+                <h2 style={{marginLeft:"90px"}}>Thông tin cá nhân</h2>
+
+             <Form
+            name="basic"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            >
+                <Form.Item
+                    label="Tên đầy đủ"
+                    name="tenDayDu"
+                    rules={[
+                    {
+                        required: true,
+                        message: 'Hãy nhập tên đăng nhập của bạn!',
+                    },
+                    ]}
+                >
+                    <Input
+                placeholder='Tên đầy đủ'
+                />
+                </Form.Item>
+
+
+                <Form.Item
+                    label="Địa chỉ"
+                    name="diaChi"
+                    rules={[
+                    {
+                        required: true,
+                        message: 'Hãy nhập email',
+                    },
+                    ]}
+                >
+                    <Input
+                    placeholder='Email'
+                    type='email'
+                    /> 
+                </Form.Item>
+
+                <Form.Item
+                    label="Giới tính"
+                    name="gioiTinh"
+                    // rules={[
+                    // {
+                    //     required: true,
+                    //     message: 'Hãy nhập mật khẩu',
+                    // },
+                    // ]}
+                >
+                    <Input
+                    placeholder='Giới tính'
+                    
+                    /> 
+                </Form.Item>
+
+                <Form.Item
+                    label="Email"
+                    name="email"
+                >
+                    <Input
+                    placeholder='Email'
+                    value={infoUser.email}
+                    /> 
+                </Form.Item>
+
+                <Form.Item
+                    label="Ngày sinh"
+                    name="ngaySinh"
+                >
+                    <Input
+                    placeholder='Ngày sinh'
+                    /> 
+                </Form.Item>
+                <Form.Item
+                >
+                    <Button style={{marginLeft:"160px", marginTop:"20px"}}htmlType="submit">Đăng kí</Button>
+                </Form.Item>
+        </Form>
+        </Modal>
         </>
     )
 }

@@ -31,6 +31,10 @@
         background: #932929
         
     }
+
+    .ant-btn[disabled], .ant-btn[disabled]:hover, .ant-btn[disabled]:focus, .ant-btn[disabled]:active{
+        background-color: #a77878;
+    }
 }
 
 .comment{

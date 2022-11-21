@@ -36,8 +36,16 @@
         margin: auto;
          .Packs{
             display: flex;
-           
-            .pack{
+            
+            .pack-bought{
+                border: 2px solid #2cf100;
+                background-color: #FEE5E5!important
+            }
+            .pack-active{
+                background-color: #FEE5E5!important;
+                border: 1px solid #D1A623;
+            }
+            .pack, .pack-active, .pack-bought{
                 border-radius: 5px;
                 width: 200px;
                 height: 180px;

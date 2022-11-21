@@ -21,6 +21,7 @@ import axios from 'axios'
 const MovieDetails = () => {
 
     const [dataFilm,setDataFilm] = useState({})
+    const [img,setImg]=useState("")
 
     const { imdbID } = useParams();
     // later callling after useEffect
@@ -41,8 +42,9 @@ const MovieDetails = () => {
     useEffect(()=>{
         axios.get(`http://localhost:3003/apis/film/show/id/${imdbID}`)
         .then(response=>{
-            console.log(response,"111")
+            console.log(response.data,"datafilm1")
             setDataFilm(response.data)
+            setImg(response.data.duongDanAnh[0]?.duongDanAnh)
         })
     },[])
 
@@ -52,13 +54,14 @@ const MovieDetails = () => {
 
       const items = [
         { label: 'Chọn tập', key: 'item-1', children: (<Tab_Ep/>) }, // remember to pass the key prop
-        { label: 'Xem trailer', key: 'item-2', children: <Tab_Comment/> },
+        { label: 'Xem trailer', key: 'item-2', children: <Tab_Comment data={dataFilm?.idPhim}/> },
         { label: 'Diễn viên', key: 'item-3', children: <Tab_Actor data={dataFilm?.dienVien}/> },
-        { label: 'Bình luận', key: 'item-4', children: <Tab_Comment/> },
+        { label: 'Bình luận', key: 'item-4', children: <Tab_Comment data={dataFilm?.idPhim}/> },
       ];
 
     const movie={
-        background_image:"../../images/background-film/image1.png",
+        id:imdbID,
+        // background_image:dataFilm?.duongDanAnh,
         nameMovie:dataFilm?.tenPhim,
         starScore: dataFilm?.danhGiaPhim,
         category:dataFilm?.theLoai,
@@ -102,7 +105,7 @@ const MovieDetails = () => {
                             marginTop: ""
 
                         }} 
-                            src={background_img}></img>
+                            src={img}></img>
                         </Col>
                     </Row>
             

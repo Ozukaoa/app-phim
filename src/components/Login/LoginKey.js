@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-
+import jwt_decode from "jwt-decode";
 import { Button, Form, Input, notification } from 'antd';
 import {LeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
@@ -26,8 +26,10 @@ const LoginKey = (props) => {
             .then(response=>{
                 console.log(response)
                 if(response.status===200){
-                    console.log(true)
-                    localStorage.setItem("accessToken",response.data)
+                    let decoded = jwt_decode(response.data.token);
+                    console.log(decoded)
+                    localStorage.setItem("accessToken",response.data.token)
+                    localStorage.setItem("infoUser",decoded.idNguoiDung)
                     notification.success({
                     message:"Đăng nhập thành công"
                 })

@@ -6,7 +6,8 @@ import {
     VideoCameraOutlined,
   } from '@ant-design/icons';
   import { Button, Layout, Menu } from 'antd';
-  import React, { useState } from 'react';
+import axios from 'axios';
+  import React, { useEffect, useState } from 'react';
   import user from "../../images/user.png"
 import FavouriteFilm from './FavouriteFilm';
 import FeedBack from './FeedBack';
@@ -21,13 +22,27 @@ import UpdateVip from './UpdateVip';
  const Sider1=(props) =>{
     const { handleClick } = props;
     const [openingModal,setOpenModal]= useState(false)
+    const [infoUser,setInfoUser] = useState({})
 
     const handleVip =()=>{
+      console.log(localStorage.getItem("infoUser").idNguoiDung)
       setOpenModal(true)
     }
     const handleCancel=()=>{
       setOpenModal(false)
     }
+
+    useEffect(()=>{
+      axios.get(`http://localhost:3003/apis/user/show/info/${localStorage.getItem("infoUser")}`)
+      .then(response=>{
+          console.log(response)
+          if(response.status===200){
+             setInfoUser(response.data[0])
+    
+          }
+   
+      })
+  },[])
 
 
 
@@ -36,7 +51,7 @@ import UpdateVip from './UpdateVip';
       <Layout.Sider>
         <div className="user" >
           <img src={user}></img> 
-          <span>User2022</span>
+          <span>{infoUser.idNguoiDung}</span>
           </div>
           <div className='GNV'>
             <Button onClick={handleVip}>Gia nhập VIP</Button>

@@ -1,16 +1,30 @@
-import React, { createElement, useState } from 'react';
+import React, { createElement, useEffect, useState } from 'react';
 import img from '../../../images/logo/user.png'
 import {GithubOutlined} from '@ant-design/icons';
 import './Tab_Comment.scss';
 import { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from '@ant-design/icons';
 import { Avatar, Comment, Tooltip ,Col,Row} from 'antd';
+import axios from 'axios';
 
 
-const Comment1=()=>{
+const Comment1=(props)=>{
 
     const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState(null);
+    const [listUser,setListUser] = useState([])
+    useEffect(()=>{
+      
+        axios.get(`http://localhost:3003/apis/user/show`)
+        .then(response=>{
+            console.log(response,"user")
+            setListUser(response.data)
+        })
+
+
+    },[])
+
+
 
   const like = () => {
     setLikes(1);
@@ -44,19 +58,22 @@ const Comment1=()=>{
        <div className='comment'>
         <Comment
         actions={actions}
-        author={<a>Han Solo</a>}
+        author={<a>{
+          listUser.find((val,index)=>
+          val.idNguoiDung === props.data.idKhachHang
+          )?.tenDayDu
+
+         }</a>}
         avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
         content={
             <p>
-            We supply a series of design principles, practical patterns and high quality design
-            resources (Sketch and Axure), to help people create their product prototypes beautifully
-            and efficiently.
+              {props.data.binhLuan}
             </p>
         }
         datetime={
             <Tooltip title="2016-11-22 11:22:33">
 
-            <span>8 hours ago</span>
+            <span>{props.data.ngayDangBinhLuan?.slice(0,10)}</span>
             </Tooltip>
         }
         />

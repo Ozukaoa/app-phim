@@ -18,6 +18,7 @@ const MovieCard = ({ data },props) => {
                 <div className="card-inner">
                     <div className="card-top">
                         <img src={
+                            data?.duongDanAnh??
                             // data.Poster
                             img
                         } alt={data?.Title} />

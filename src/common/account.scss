@@ -207,4 +207,14 @@
     .chung{
         padding: 40px 120px 40px 120px;
     }
+    .modalInfo{
+        text-align: center;
+        .ant-modal-close{
+            height: 10px;
+        }
+        .modaltitle{
+            text-align: center;
+        }
+    }
+    
 }

@@ -8,7 +8,7 @@ import play from'../../images/logo/play.png'
 import {
         StarFilled,
       } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 const contentStyle = {
   margin: 0,
   height: '160px',
@@ -19,7 +19,7 @@ const contentStyle = {
 };
 
 const InfoFilm = (props) => {
-
+ 
   const contentStyle = {
     // height: '80%',
     color: '#fff',
@@ -102,7 +102,7 @@ const InfoFilm = (props) => {
                 {props.data.describe}
             </div>
             <div style={{display:"flex"}}>
-            <Link to={`/movie/2/play`}>
+            <Link to={`/movie/play/${props.data.id}`}>
           <span className='img' onClick={{}}><img src={play} ></img></span>
               </Link>
            <span className='img' onClick={{}}><img src={favourite} ></img></span>

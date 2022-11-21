@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Carousel,Button, Row, Col } from 'antd';
 import{
     ExportOutlined,
@@ -10,16 +10,29 @@ import { fetchAsyncMovies, fetchAsyncShows } from '../../features/movies/movieSl
 import './MoviePlay.scss';
 import MovieListing from '../MovieListing/MovieListing';
 import { useDispatch } from 'react-redux';
-const MoviePlay =()=>{
+import axios from 'axios';
+const MoviePlay =(props)=>{
+
+    const [dataFilm,setDataFilm] = useState({})
 
     const dispatch = useDispatch();
     const defaultMovie = "Dumb";
     const defaultShow = "game"
     useEffect(() => {
+        console.log(props.match.params.id
+            )
         dispatch(fetchAsyncMovies(defaultMovie))
         dispatch(fetchAsyncShows(defaultShow))
     }, [dispatch])
 
+
+    useEffect(()=>{
+        axios.get(`http://localhost:3003/apis/film/show/id/${props.match.params.id}`)
+        .then(response=>{
+            console.log(response,"111")
+            setDataFilm(response.data)
+        })
+    },[])
     const bxh=[
         "1   Lost Bullet",
         "2   Avengers: Infinity War",
@@ -58,7 +71,7 @@ const MoviePlay =()=>{
                 </Col>
                 <Col span={6}>
                     <div className="right">
-                       <span> Hospital Playlist</span>
+                       <span> {dataFilm.tenPhim}</span>
                     <div className='chontap'>Chọn tập</div>
                     <div className='wrapper'>
                         {array.map((element,index) => {
@@ -79,15 +92,15 @@ const MoviePlay =()=>{
             <Row>
                 <Col span={18}>
                 <div className='info1'>
-                <div className='title'>Hospital Playlist -Tập 3</div>
+                <div className='title'>{dataFilm.tenPhim}</div>
                 <div>
                     <span className='star'><StarFilled /></span>
-                    <span className='starScore'> 9.8 </span>
+                    <span className='starScore'> {dataFilm.danhGiaPhim} </span>
                     <span className='de'>(4.9 người đã đánh giá) </span>
                     <a>&ensp;Tôi muốn đánh giá</a>
                 </div>
                 <div className='describe'>
-                Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.
+                        {dataFilm.moTa}
                 </div>
             </div>
             

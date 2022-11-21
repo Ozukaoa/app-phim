@@ -20,7 +20,7 @@ const Register = (props) => {
     const onFinish = (values) => {
         console.log('Success:', values);
         let {xacNhanMatKhau,...rest} =values;
-        
+        rest={vaiTro:"user",...rest}
         axios.post("http://localhost:3003/apis/register", rest)
             .then(response=>{
                 console.log(response)
