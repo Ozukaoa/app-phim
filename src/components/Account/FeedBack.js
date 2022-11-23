@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Space,Radio, Input } from 'antd';
+import { Dropdown, Space,Radio, Input, Form, Button, notification } from 'antd';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
+import axios from "axios";
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -14,6 +15,7 @@ function getItem(label, key, icon, children, type) {
 }
 
 const FeedBack =()=>{
+  const [form] = Form.useForm();
 
     const [value, setValue] = useState(1);
     const onChange = (e) => {
@@ -50,6 +52,38 @@ const FeedBack =()=>{
         ]),
     ]
 
+
+    const onFinish = (values) => {
+      console.log('Success:', values);
+      let data ={
+        idNguoiDung:localStorage.getItem("infoUser"),
+          ...values
+
+      }
+    
+      axios.post(process.env.REACT_APP_DB_HOST+"user/create/complain", data)
+          .then(response=>{
+              console.log(response)
+              if(response.status===200){
+                form.resetFields();
+                  notification.success({
+                  message:"Gửi yêu cầu thành công"
+              })
+              }
+          
+                  
+          })
+          
+          .catch(error =>{
+              notification.error({
+                  message:""
+              })
+          })
+    };
+    const onFinishFailed = (errorInfo) => {
+      console.log('Failed:', errorInfo);
+    };
+
     const onClick = (e) => {
         console.log('click ', e);
       };
@@ -57,7 +91,28 @@ const FeedBack =()=>{
     return (
         <>
             <h2>Phản ánh ý kiến</h2>
-        <div className="flex">
+            
+            <Form
+            name="basic"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            >
+                <Form.Item
+                    name="noiDungKhieuNai"
+                >
+                    <Input
+                placeholder='Nhập nội dung bạn muốn khiếu nại'
+                />
+                </Form.Item>
+
+                <Form.Item
+                >
+                    <Button htmlType="submit">Yêu cầu</Button>
+                </Form.Item>
+                </Form>
+
+        {/* <div className="flex">
             <div>
                 <div className="title">Phân loại vấn đề</div>
                 <div className="content">
@@ -86,7 +141,7 @@ const FeedBack =()=>{
             <div className="btn">
                 Gửi đi
             </div>
-        </div>
+        </div> */}
         
         </>
     )

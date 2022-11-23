@@ -1,13 +1,17 @@
-import { Button, Col, Form, Input, Modal, notification, Row } from "antd"
+import { Button, Col, DatePicker, Form, Input, Modal, notification, Row, Select } from "antd"
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import user from "../../images/user.png"
+import moment from 'moment'
 
 
-const InfoAccount =() =>{
+const InfoAccount =(props) =>{
 
     const [openModal,setOpenModal] =useState(false)
     const [infoUser,setInfoUser] = useState({})
+    const [infoUser1,setInfoUser1] = useState({})
+    const [date,setDate] =useState("")
+    const [sex,setSex] = useState("")
     const handleOpenModal =()=>{
         setOpenModal(true)
     }
@@ -15,13 +19,33 @@ const InfoAccount =() =>{
         setOpenModal(false)
     }
 
+    const handleChangeSex =(value) => {
+        console.log(`selected ${value}`);
+        setSex(value)
+      };
+
+    const handleChangeDate = (date, dateString) => {
+        console.log(date, dateString);
+        setDate(dateString)
+      };
+
+    const handleChange = (e) => {
+        console.log(infoUser1,"get")
+        setInfoUser1({...infoUser1,
+            [e.target.name]:e.target.value})
+       
+      }
+
+    
+
     
     useEffect(()=>{
-        axios.get(`http://localhost:3003/apis/user/show/info/${localStorage.getItem("infoUser")}`)
+        axios.get(process.env.REACT_APP_DB_HOST+`user/show/info/${localStorage.getItem("infoUser")}`)
         .then(response=>{
             console.log(response,"user")
             if(response.status===200){
                setInfoUser(response.data[0])
+               setInfoUser1(response.data[0])
                 
             }
         
@@ -30,17 +54,22 @@ const InfoAccount =() =>{
     },[])
 
     const onFinish = (values) => {
-        console.log('Success:', values);
+        var data={...infoUser1,
+            ngaySinh:date.length===0?infoUser.ngaySinh.slice(0,10):date,
+            gioiTinh:sex.length===0?infoUser.gioiTinh:sex,
+            idNguoiDung:localStorage.getItem("infoUser")}
 
-        axios.get(`http://localhost:3003/apis//show/info/${localStorage.getItem("infoUser")}`)
+        axios.post(process.env.REACT_APP_DB_HOST+`user/update/info`,data)
             .then(response=>{
                 console.log(response)
                 if(response.status===200){
-                   setInfoUser(response.data)
-                    // localStorage.setItem("accessToken",response.data)
+                //    
+                 
                     notification.success({
-                    message:"Tạo tài khoản thành công"
+                    message:"Cập thành công"
                 })
+                closeModal()
+
                 }
             
                     
@@ -68,7 +97,7 @@ const InfoAccount =() =>{
                         <Row>
                             <Col span={2}><img src={user}></img> </Col>
                             <Col span={18}><span className="bt1">
-                                <div>{infoUser.idNguoiDung}</div>
+                                <div>{infoUser.tenDayDu}</div>
                                 <div>
                                 <Row>
                                     <Col span={11}>
@@ -81,7 +110,7 @@ const InfoAccount =() =>{
                                     <Col span={2}>|</Col>
                                     <Col span={11}>
                                     <span className="thin">Ngày sinh: </span>
-                                        <span>{infoUser.ngaySinh??"Chưa được thiết lập"}</span>
+                                        <span>{(infoUser.ngaySinh??"Chưa được thiết lập").slice(0,10)}</span>
                                     </Col>
                                 </Row>
                                 </div>
@@ -106,7 +135,7 @@ const InfoAccount =() =>{
                         <div className="bt2">Đăng kí VIP để xem nội dung độc quyền, xem phim HD đồng thời có thể bỏ qua quảng cáo</div>
                         </Col>
                         <Col span={2} className="bt3">
-                                <Button className="btn">Đăng kí VIP</Button>
+                                <Button className="btn" onClick={props.click}>Đăng kí VIP</Button>
                             </Col>
                     </Row>
 
@@ -120,7 +149,7 @@ const InfoAccount =() =>{
                     <div >
                         <div className="start">
                             Email &ensp;<span className="bold">{infoUser.email}</span>
-                            <div className="end" onClick={{}}>Chỉnh sửa</div>
+                            {/* <div className="end" onClick={{}}>Chỉnh sửa</div> */}
                         </div>
                         
                         <hr></hr>
@@ -129,7 +158,7 @@ const InfoAccount =() =>{
                     <div >
                         <div className="start">
                             Số điện thoại &ensp;<span className="bold">Chưa được thiết lập</span>
-                            <div className="end" onClick={{}}>Chỉnh sửa</div>
+                            {/* <div className="end" onClick={{}}>Chỉnh sửa</div> */}
                         </div>
                         
                         <hr></hr>
@@ -138,7 +167,7 @@ const InfoAccount =() =>{
                     <div >
                         <div className="start">
                             Mật khẩu &ensp;<span className="bold">Chưa được thiết lập</span>
-                            <div className="end" onClick={{}}>Chỉnh sửa</div>
+                            {/* <div className="end" onClick={{}}>Chỉnh sửa</div> */}
                         </div>
                         
                         <hr></hr>
@@ -147,7 +176,7 @@ const InfoAccount =() =>{
                     <div >
                         <div className="start">
                             Quản lí Vip &ensp;<span className="bold">Chưa được thiết lập</span>
-                            <div className="end" onClick={{}}>Chỉnh sửa</div>
+                            {/* <div className="end" onClick={{}}>Chỉnh sửa</div> */}
                         </div>
                         
                         <hr></hr>
@@ -167,13 +196,24 @@ const InfoAccount =() =>{
                 <h2 style={{marginLeft:"90px"}}>Thông tin cá nhân</h2>
 
              <Form
+             initialValues={{
+                
+                ...infoUser,
+                ngaySinh:infoUser.ngaySinh?.slice(0,10)
+
+
+             }
+                
+            }
             name="basic"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
+            className="infofo"
             >
                 <Form.Item
                     label="Tên đầy đủ"
+                    labelCol={{ span: 24 }}
                     name="tenDayDu"
                     rules={[
                     {
@@ -183,13 +223,16 @@ const InfoAccount =() =>{
                     ]}
                 >
                     <Input
-                placeholder='Tên đầy đủ'
+                    name="tenDayDu"
+                    placeholder='Tên đầy đủ'
+                    onChange={handleChange}
                 />
                 </Form.Item>
 
 
                 <Form.Item
                     label="Địa chỉ"
+                    labelCol={{ span: 24 }}
                     name="diaChi"
                     rules={[
                     {
@@ -199,50 +242,75 @@ const InfoAccount =() =>{
                     ]}
                 >
                     <Input
-                    placeholder='Email'
-                    type='email'
+                    className="input11"
+                    name="diaChi"
+                    placeholder='Dia chi'
+                    onChange={handleChange}
                     /> 
                 </Form.Item>
 
                 <Form.Item
                     label="Giới tính"
+                    labelCol={{ span: 24 }}
                     name="gioiTinh"
-                    // rules={[
-                    // {
-                    //     required: true,
-                    //     message: 'Hãy nhập mật khẩu',
-                    // },
-                    // ]}
                 >
-                    <Input
-                    placeholder='Giới tính'
-                    
-                    /> 
+                   <Select
+                        
+                        defaultValue={infoUser.gioiTinh}
+                        style={{ width: 350 }}
+                        onChange={handleChangeSex}
+                        options={[
+                            {
+                            value: 'Nam',
+                            label: 'Nam',
+                            },
+                            {
+                            value: 'Nữ',
+                            label: 'Nữ',
+                            },
+                            {
+                            value: 'Không xác đinh',
+                            label: 'Không xác định',
+                            },
+                           
+                        ]}
+                        />
+                
                 </Form.Item>
 
                 <Form.Item
                     label="Email"
                     name="email"
+                    labelCol={{ span: 24 }}
                 >
+    
                     <Input
+                    name="email"
                     placeholder='Email'
-                    value={infoUser.email}
+                    onChange={handleChange}
                     /> 
                 </Form.Item>
 
                 <Form.Item
+                     labelCol={{ span: 24 }}
                     label="Ngày sinh"
-                    name="ngaySinh"
+                    className="datecustom"
+                    // name="ngaySinh"
                 >
-                    <Input
-                    placeholder='Ngày sinh'
-                    /> 
+                  <DatePicker 
+                //   name="ngaySinh"
+                        defaultValue={moment(infoUser.ngaySinh?.slice(0,10),'YYYY-MM-DD')}
+                    style={{width: 350,display:"block"}}
+                    onChange={handleChangeDate}
+                    // format={'YYYY/MM/DD'} 
+                   />
                 </Form.Item>
                 <Form.Item
                 >
-                    <Button style={{marginLeft:"160px", marginTop:"20px"}}htmlType="submit">Đăng kí</Button>
+                    <Button style={{marginLeft:"160px", marginTop:"20px"}} htmlType="submit">Đăng kí</Button>
                 </Form.Item>
         </Form>
+    
         </Modal>
         </>
     )

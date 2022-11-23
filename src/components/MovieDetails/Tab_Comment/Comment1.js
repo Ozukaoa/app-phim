@@ -15,7 +15,7 @@ const Comment1=(props)=>{
     const [listUser,setListUser] = useState([])
     useEffect(()=>{
       
-        axios.get(`http://localhost:3003/apis/user/show`)
+        axios.get(process.env.REACT_APP_DB_HOST+`user/show`)
         .then(response=>{
             console.log(response,"user")
             setListUser(response.data)

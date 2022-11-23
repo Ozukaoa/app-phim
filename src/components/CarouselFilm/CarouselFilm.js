@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './CarouselFilm.scss';
 
 import { Carousel,Button, Row, Col } from 'antd';
@@ -13,6 +13,7 @@ import {ArrowRightOutlined,
         StarFilled,
       } from '@ant-design/icons';
 import InfoFilm from './InfoFilm';
+import axios from 'axios';
 const contentStyle = {
   margin: 0,
   height: '160px',
@@ -22,7 +23,11 @@ const contentStyle = {
   background: '#364d79',
 };
 
+
+
 const CarouselFilm = () => {
+
+  const [dataFilm,setDataFilm] = useState([])
 
   const contentStyle = {
     // height: '80%',
@@ -31,6 +36,15 @@ const CarouselFilm = () => {
     textAlign: 'center',
     background: '#364d79'
   }
+
+  useEffect(()=>{
+    axios.get(process.env.REACT_APP_DB_HOST+`film/show`)
+          .then(response=>{
+             
+              setDataFilm(response.data)     
+              
+          })
+  },[])
   
   // from https://react-slick.neostack.com/docs/example/custom-arrows
   
@@ -88,14 +102,14 @@ const CarouselFilm = () => {
         // prevArrow={<ArrowLeftOutlined/>}
         >
       
-      {listFilm.map((value,index)=>{
+      {dataFilm.slice(0,4).map((value,index)=>{
         return (
             <div key={index}>
-              <img src={value?.background_image} 
+              <img src={value?.duongDanAnh.duongDanAnh} 
               style={{
                 objectFit:"cover",
                 position:"",
-                height:"100%",
+                height:"700px",
                 width:"100%",
 
            }}>

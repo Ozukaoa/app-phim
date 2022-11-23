@@ -5,9 +5,10 @@ import {
     UserOutlined,
     VideoCameraOutlined,
   } from '@ant-design/icons';
-  import { Button, Layout, Menu } from 'antd';
+  import { Button, Layout, Menu, Modal } from 'antd';
 import axios from 'axios';
   import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
   import user from "../../images/user.png"
 import FavouriteFilm from './FavouriteFilm';
 import FeedBack from './FeedBack';
@@ -20,20 +21,49 @@ import UpdateVip from './UpdateVip';
   const { Header, Sider, Content } = Layout;
 
  const Sider1=(props) =>{
+  const history = useHistory();
     const { handleClick } = props;
     const [openingModal,setOpenModal]= useState(false)
     const [infoUser,setInfoUser] = useState({})
+    const [openLog,setOpenLog] = useState(false)
+
+
+    useEffect(()=>{
+      setOpenModal(props.click)
+    },[props.click])
 
     const handleVip =()=>{
-      console.log(localStorage.getItem("infoUser").idNguoiDung)
+      
       setOpenModal(true)
     }
+
+    const click =()=>{
+      props.close()
+    }
     const handleCancel=()=>{
+      click ()
       setOpenModal(false)
+     
+    }
+
+    const openModalLogout =() =>{
+      setOpenLog(true)
+    }
+
+    const closeModalLogout =() =>{
+      setOpenLog(false)
+    }
+
+    const Logout = () =>{
+     
+      localStorage.removeItem("accessToken")
+      localStorage.removeItem("infoUser")
+      history.push("/")
+      window.location.reload()
     }
 
     useEffect(()=>{
-      axios.get(`http://localhost:3003/apis/user/show/info/${localStorage.getItem("infoUser")}`)
+      axios.get(process.env.REACT_APP_DB_HOST+`user/show/info/${localStorage.getItem("infoUser")}`)
       .then(response=>{
           console.log(response)
           if(response.status===200){
@@ -51,7 +81,7 @@ import UpdateVip from './UpdateVip';
       <Layout.Sider>
         <div className="user" >
           <img src={user}></img> 
-          <span>{infoUser.idNguoiDung}</span>
+          <span>{infoUser.tenDayDu}</span>
           </div>
           <div className='GNV'>
             <Button onClick={handleVip}>Gia nhập VIP</Button>
@@ -80,9 +110,9 @@ import UpdateVip from './UpdateVip';
             <Menu.Item key="6" onClick={handleClick}>
               Phản ánh ý kiến
             </Menu.Item>
-            <Menu.Item key="7" onClick={handleClick}>
+            <Menu.Item key="7" >
             <hr></hr>
-            <div className='center'>
+            <div className='center' onClick={openModalLogout}>
             Đăng xuất
 
             </div>
@@ -97,6 +127,18 @@ import UpdateVip from './UpdateVip';
           handleCloseVip={handleCancel}
           
         />
+        <Modal
+        title=" "
+         closable={false}
+          open={openLog}
+          onCancel={closeModalLogout}
+          // footer={false}
+          onOk={Logout}
+          okText="Có"
+          cancelText="Huỷ"
+          >
+            <div style={{fontSize:"20"}}>Bạn có chắc muốn đăng xuất khỏi tài khoản không</div>
+        </Modal>
       </>
     );
   }
@@ -111,13 +153,21 @@ const Sidebar = () => {
       alignItems: "center",
       justifyContent: "center"
     };
+
+    const clickVip =() =>{
+      setCollapsed(true)
+    }
+
+    const closeVip =()=>{
+      setCollapsed(false)
+    }
   
     const components = {
-      1: <div className='infoAccount'><InfoAccount/></div>,
+      1: <div className='infoAccount'><InfoAccount click={clickVip} /></div>,  
       2: <div className='chung'><HistoryFilm/></div>,
       3: <div className='chung'><FavouriteFilm/></div>,
       4: <div className='chung'><RequestFilm/></div>,
-      5: <div style={style}>Option 3</div>,
+      5: <div style={style}><h2>Lịch sử giao dịch</h2></div>,
       6: <div className='feedBack'><FeedBack/></div>
     };
   
@@ -130,7 +180,7 @@ const Sidebar = () => {
         <div className='account'>
 
               <Layout  className='layout' style={{ minHeight: "100vh"}}>
-                <Sider1 handleClick={handleMenuClick} />
+                <Sider1 handleClick={handleMenuClick} click={collapsed} close={closeVip}/>
                 <Layout>
                   <div >
                   <Content>{components[render]}</Content>

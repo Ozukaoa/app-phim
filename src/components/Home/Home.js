@@ -14,7 +14,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const defaultMovie = "Dumb";
     const defaultShow = "game";
-    const dataHomePage =()=> axios.get("http://localhost:3003/apis/homePage")
+    const dataHomePage =()=> axios.get(process.env.REACT_APP_DB_HOST+"homePage")
         .then(response=>{
             console.log(response,"111")
         })

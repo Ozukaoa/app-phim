@@ -14,6 +14,7 @@ import { Col, Row } from 'antd';
 
 
 const Search = () => {
+    console.log(process.env.REACT_APP_DB_HOST)
    
     const [dataSearch,setDataSearch] =useState([])
     const [image,setImage] =useState([])
@@ -32,14 +33,16 @@ const Search = () => {
     ]
     
     useEffect(()=>{
-        axios.get(`http://localhost:3003/apis/film/search/name/${localStorage.getItem("search")}`)
+        axios.get(process.env.REACT_APP_DB_HOST+`film/search/name/${localStorage.getItem("search")}`)
         .then(response=>{
             setDataSearch(response.data.map((val,index)=>val.idPhim))
+            if(localStorage.getItem("search").length===0)
+                setDataSearch(image??[])
         })
     },[localStorage.getItem("search")])
   
     useEffect(()=>{
-        axios.get(`http://localhost:3003/apis/film/show`)
+        axios.get(process.env.REACT_APP_DB_HOST+`film/show`)
         .then(response=>{
             setImage(response.data)
         })
@@ -55,9 +58,12 @@ const Search = () => {
                         {image.map((val,index)=>{
                             if(dataSearch.includes(val.idPhim))
                                 return (
+                                
                                     <div className='card'>
                                         <Link to={`/movie/${val.idPhim}`}>
-                                        <img src={val.duongDanAnh[2]?.duongDanAnh??imgNull}
+                                        <img src={
+                                            val?.duongDanAnh?.duongDanAnh??
+                                        imgNull}
                                              alt={index} 
                                              height={250}
                                              width={170}
@@ -70,7 +76,7 @@ const Search = () => {
                                                 <div>Năm: {val.ngayChieu?.slice(0,4)}</div>
                                                 <div>Đạo diễn :</div>
                                                 <div>Diễn viên : {val.dienVien[0]?.tenDienVien}, {val.dienVien[1]?.tenDienVien}</div>
-                                                <Link to={`/movie/play/${val?.idPhim}`}>
+                                                <Link to={`/movie/${val?.idPhim}`}>
                                                 <div className='xemngay'>Xem ngay</div>
                                                 </Link>
                                             </div>

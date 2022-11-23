@@ -40,12 +40,14 @@ const MovieDetails = () => {
     }, [dispatch, imdbID])
 
     useEffect(()=>{
-        axios.get(`http://localhost:3003/apis/film/show/id/${imdbID}`)
+        axios.get(process.env.REACT_APP_DB_HOST+`film/show/id/${imdbID}`)
         .then(response=>{
             console.log(response.data,"datafilm1")
             setDataFilm(response.data)
             setImg(response.data.duongDanAnh[0]?.duongDanAnh)
         })
+        window.scrollTo(0, 0)
+
     },[])
 
     const onChange = (key) => {
@@ -54,7 +56,13 @@ const MovieDetails = () => {
 
       const items = [
         { label: 'Chọn tập', key: 'item-1', children: (<Tab_Ep/>) }, // remember to pass the key prop
-        { label: 'Xem trailer', key: 'item-2', children: <Tab_Comment data={dataFilm?.idPhim}/> },
+        { label: 'Xem trailer', key: 'item-2', children: <div style={{textAlign:"center" ,fontSize:"20px"}}>Xem trailer
+            <div>
+      <video width="720" height="480" controls>
+      <source src={`http://localhost:3003/apis/film/playfilm/${dataFilm.idPhim}`}></source>
+      </video>
+    </div>
+        </div> },
         { label: 'Diễn viên', key: 'item-3', children: <Tab_Actor data={dataFilm?.dienVien}/> },
         { label: 'Bình luận', key: 'item-4', children: <Tab_Comment data={dataFilm?.idPhim}/> },
       ];
@@ -90,7 +98,7 @@ const MovieDetails = () => {
 
                             }}>{movie.nameMovie}</div>
                             <InfoFilm
-                            data={movie}
+                            data={dataFilm}
                             />
                            </div>
                         </Col>

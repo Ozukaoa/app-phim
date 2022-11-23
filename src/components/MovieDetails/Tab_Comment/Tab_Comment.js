@@ -16,7 +16,7 @@ const Tab_Comment=(props)=>{
         setPostComment(e.target.value)
       };
     useEffect(()=>{
-        axios.get(`http://localhost:3003/apis/comment/getallofone/${props.data}`)
+        axios.get(process.env.REACT_APP_DB_HOST+`comment/getallofone/${props.data}`)
         .then(response=>{
             console.log(response,"comment")
             setListComment(response.data)
@@ -32,7 +32,7 @@ const Tab_Comment=(props)=>{
             binhLuan:postComment,
         }
 
-        axios.post("http://localhost:3003/apis/comment/add", data)
+        axios.post(process.env.REACT_APP_DB_HOST+"comment/add", data)
             .then(response=>{
                 console.log("tt")
                 setPostComment("")

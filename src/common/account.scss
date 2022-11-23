@@ -154,6 +154,19 @@
                 margin-bottom: 3vh;
             }
         }
+
+      .infofo{
+        .ant-form-item{
+            margin-bottom: 5px!important;
+          }
+
+          button{
+            display: block!important;
+          }
+      }
+        
+       
+
     }
     //feedback
     .feedBack{
@@ -206,6 +219,52 @@
 
     .chung{
         padding: 40px 120px 40px 120px;
+        .btnCS{
+            margin: 10px;
+            background-color: #DE5454;
+            width: 100px;
+            height: 40px;
+            border-radius: 5px;
+            padding-top: 10px;
+            cursor: pointer;
+
+            
+        }
+        .flex1{
+            margin-left: 85%;
+        }
+        .flex{
+            display: flex;
+            position: relative;
+          
+            
+        }
+
+        .box{
+            color: white;
+            display: grid;
+    /* grid-template-columns: 25% 25% 25% 25%; */
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+        }
+        .khungImg{
+            display: block;
+            width: 300px;
+            margin: 10px;
+            img{
+                    width: 300px;
+                    height: 160px;
+                }
+
+        .delete{
+            position: absolute;
+            width: 300px;
+            height: 160px;
+            background-color: #282a296c;
+            padding-top: 50px;
+            font-size: 40px;
+            cursor: pointer;
+        }
+        }
     }
     .modalInfo{
         text-align: center;
@@ -216,5 +275,21 @@
             text-align: center;
         }
     }
+
+    
     
 }
+
+.infofo{
+    .ant-form-item{
+        margin-bottom: 5px!important;
+      }
+
+      .button{
+        display: block!important;
+      }
+
+      input{
+        height: 40px;
+      }
+  }

@@ -55,6 +55,12 @@ input {
   // letter-spacing: 0.5px;
 }
 
+.ant-picker-header{
+  button{
+    position: unset;
+  }
+}
+
 button {
   position: absolute;
   right: 20px;
@@ -91,6 +97,17 @@ button {
   .button{
     margin-left: 40px;
   }
+
+  .nofi{
+    .lv1{
+      width: 40px;
+
+      .tt2{
+        width: 4px;
+      }
+    }
+  }
+
 }
 
 .click{

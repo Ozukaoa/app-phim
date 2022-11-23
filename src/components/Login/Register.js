@@ -21,7 +21,7 @@ const Register = (props) => {
         console.log('Success:', values);
         let {xacNhanMatKhau,...rest} =values;
         rest={vaiTro:"user",...rest}
-        axios.post("http://localhost:3003/apis/register", rest)
+        axios.post(process.env.REACT_APP_DB_HOST+"register", rest)
             .then(response=>{
                 console.log(response)
                 if(response.status===200){
@@ -31,9 +31,10 @@ const Register = (props) => {
                     message:"Tạo tài khoản thành công"
                 })
                 }
+                
             
                     
-            })
+            }).then(props.close)
             
             .catch(error =>{
                 notification.error({

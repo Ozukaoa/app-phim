@@ -22,7 +22,7 @@ const LoginKey = (props) => {
     const onFinish = (values) => {
         console.log('Success:', values);
         
-        axios.post("http://localhost:3003/apis/login", values)
+        axios.post(process.env.REACT_APP_DB_HOST+"login", values)
             .then(response=>{
                 console.log(response)
                 if(response.status===200){
@@ -36,7 +36,7 @@ const LoginKey = (props) => {
                 }
             
                     
-            })
+            }).then(props.close)
             
             .catch(error =>{
                 notification.error({

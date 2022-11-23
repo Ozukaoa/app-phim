@@ -16,9 +16,21 @@
 // }
 // }
 .info{
+  background-color: #393a3f2d;
+  .btt{
+    display: flex;
+  }
+  .Button-cate{
+    margin: 10px;
+    border-radius: 6px;
+    background-color: #888787;
+    height: 30px;
+    padding: 6px 10px 10px 10px;
+  }
   .mg-1{
-    color:#393A3F;
+    color:#6f6f75;
     margin-left: 10px;
+    font-size: 20px;
   }
   .mg{
     color: #FFFFFF;

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Carousel,Button, Row, Col } from 'antd';
+import { Carousel,Button, Row, Col, Rate, Popover, notification } from 'antd';
 import{
     ExportOutlined,
     StarOutlined,
-    StarFilled
+    StarFilled,
+    StarTwoTone
 } from '@ant-design/icons';
 import { fetchAsyncMovies, fetchAsyncShows } from '../../features/movies/movieSlice';
 
@@ -12,9 +13,13 @@ import MovieListing from '../MovieListing/MovieListing';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 const MoviePlay =(props)=>{
+    const [value, setValue] = useState(3);
+    const desc = ['terrible', 'bad', 'normal', 'good', 'wonderful'];
 
     const [dataFilm,setDataFilm] = useState({})
+    const [dataFilmLiked,setDataFilmLiked] = useState([])
 
+  
     const dispatch = useDispatch();
     const defaultMovie = "Dumb";
     const defaultShow = "game"
@@ -24,15 +29,100 @@ const MoviePlay =(props)=>{
         dispatch(fetchAsyncMovies(defaultMovie))
         dispatch(fetchAsyncShows(defaultShow))
     }, [dispatch])
+    // useEffect(() => {
+    //     console.log(props.match.params.id
+    //         )
+    // }, [dispatch])
+    const [like,setLike] = useState(!dataFilmLiked?false:
+        dataFilmLiked.map((value,index)=>value.idPhim)
+        .includes(props.match.params.id))
+
+    useEffect(()=>{
+        console.log(dataFilmLiked??[].map((value,index)=>value.idPhim)
+        .includes(props.match.params.id),"test")
+        axios.get(process.env.REACT_APP_DB_HOST+`user/show/liked/${localStorage.getItem("infoUser")}`)
+        .then(response=>{
+            setDataFilmLiked(response.data)
+            setLike(response.data.map((value,index)=>value.idPhim) 
+            .includes(Number(props.match.params.id)))
+
+            
+        })
+
+        axios.get(process.env.REACT_APP_DB_HOST+`watchfilm/get/${localStorage.getItem("infoUser")}`)
+        .then(response=>{
+            if(response.data.map((value,index)=>value.idPhim).includes(Number(props.match.params.id)))
+                        {return }
+                    else {
+                        let data={
+                            idPhim:props.match.params.id,
+                            idKhachHang:localStorage.getItem("infoUser"),
+                            idTap:0
+
+                        }
+                        axios.post(process.env.REACT_APP_DB_HOST+`watchfilm/add`,data)
+                        .then(
+                            response=>{
+                                console.log(response,"res")
+                            }
+                        )
+                    }
+
+            
+        })
+    
+    },[])
+    const handleLike =() =>{
+        setLike(true)
+        let data={
+            idPhim: props.match.params.id,
+            idNguoiDung: localStorage.getItem("infoUser")
+        } 
+        axios.post(process.env.REACT_APP_DB_HOST+`user/like`,data)
+        .then(response=>{
+            console.log(response,"success")
+
+
+        })
+    }
+
+    const handleUnLike =() =>{
+        console.log("unlike")
+        setLike(false)
+        let data={
+            idPhim: props.match.params.id,
+            idNguoiDung: localStorage.getItem("infoUser")
+        } 
+        axios.post(process.env.REACT_APP_DB_HOST+`user/unlike`,data)
+        .then(response=>{
+            console.log(response,"111")
+
+        })
+    }
 
 
     useEffect(()=>{
-        axios.get(`http://localhost:3003/apis/film/show/id/${props.match.params.id}`)
+        axios.get(process.env.REACT_APP_DB_HOST+`film/show/id/${props.match.params.id}`)
         .then(response=>{
             console.log(response,"111")
             setDataFilm(response.data)
         })
+
     },[])
+
+    const rateStar =()=>{
+        let data={
+            idPhim: props.match.params.id,
+            idKhachHang: localStorage.getItem("infoUser"),
+            soSaoDanhGia:value
+        }
+        axios.post(process.env.REACT_APP_DB_HOST+`user/create/rate`,data)
+        .then(response=>{
+            notification.success({
+                message:"Đã vote thành công"
+            })
+        })  
+    }
     const bxh=[
         "1   Lost Bullet",
         "2   Avengers: Infinity War",
@@ -63,9 +153,21 @@ const MoviePlay =(props)=>{
             <div className='playfilm'>
                 <Row>
                 <Col span={18}>
-                <iframe width="100%" height="360" src="https://www.youtube.com/embed/gdYsRyQ6ing" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>        
+               
+                <div>
+                    <video width="950" height="400" controls>
+                    <source src={`http://localhost:3003/apis/film/playfilm/${dataFilm.idPhim}`}></source>
+                    </video>
+                    </div>
+    
                 <div className='function'>
-                    <span> <StarOutlined /> Thêm vào yêu thích</span>
+                    {!localStorage.getItem("infoUser")
+                          ?<span>ko có</span>
+                          : like
+                            ?  <span onClick={handleUnLike} style={{color:"yellow"}}> <StarFilled /> Đã yêu thích</span>
+                            :  <span onClick={handleLike} > <StarOutlined /> Thêm vào yêu thích</span>
+                    }
+                  
                     <span className='rotate'> <ExportOutlined/> Chia sẻ</span>
                 </div>
                 </Col>
@@ -97,7 +199,25 @@ const MoviePlay =(props)=>{
                     <span className='star'><StarFilled /></span>
                     <span className='starScore'> {dataFilm.danhGiaPhim} </span>
                     <span className='de'>(4.9 người đã đánh giá) </span>
-                    <a>&ensp;Tôi muốn đánh giá</a>
+                    
+                    <Popover placement="bottomRight"  content={
+                             <div className='star'>
+                                
+                                <span>
+                            <Rate tooltips={desc} onChange={setValue} value={value} />
+                            {/* {value ? <span className="ant-rate-text">{desc[value - 1]}</span> : ''} */}
+                            </span>
+                            <div onClick={rateStar} style={{cursor:"pointer"}}>Gửi kết quả</div>
+                            </div>
+                        
+                      
+                    } 
+                    trigger={localStorage.getItem("accessToken")?"click":""}
+                    >
+            <a>&ensp;Tôi muốn đánh giá</a>
+             </Popover>
+
+                    
                 </div>
                 <div className='describe'>
                         {dataFilm.moTa}

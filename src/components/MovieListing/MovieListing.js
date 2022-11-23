@@ -14,7 +14,7 @@ const MovieListing = () => {
     
 
     useEffect(()=>{
-        axios.get("http://localhost:3003/apis/homePage")
+        axios.get(process.env.REACT_APP_DB_HOST+"homePage")
         .then(response=>{
             console.log(response,"111")
             setDataHome(response.data)

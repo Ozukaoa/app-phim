@@ -14,7 +14,7 @@ const UpdateVip =(props) =>{
     const [myDataVip,getMyDataVip] = useState({})
 
     useEffect(()=>{
-        axios.get(`http://localhost:3003/apis/subscription/show`)
+        axios.get(process.env.REACT_APP_DB_HOST+`subscription/show`)
       .then(response=>{
           if(response.status===200){
             console.log(response.data)
@@ -24,7 +24,7 @@ const UpdateVip =(props) =>{
    
       })
 
-      axios.get(`http://localhost:3003/apis/user/show/subscribed/${localStorage.getItem("infoUser")}`)
+      axios.get(process.env.REACT_APP_DB_HOST+`user/show/subscribed/${localStorage.getItem("infoUser")}`)
       .then(response=>{
           if(response.status===200){
             console.log(response.data)
@@ -47,7 +47,7 @@ const UpdateVip =(props) =>{
             idKhachHang:localStorage.getItem("infoUser"),
             idGoi:packVip
         }
-        axios.post(`http://localhost:3003/apis/user/create/subscribe`,data)
+        axios.post(process.env.REACT_APP_DB_HOST+`user/create/subscribe`,data)
       .then(response=>{
           if(response.status===200){
             console.log(response.data)
