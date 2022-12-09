@@ -84,16 +84,16 @@ const InfoFilm = (props) => {
         //    right:"-50px",top:"-280px"
            }}>
               <div>
-              <span className='text'><StarFilled /> {props.data.danhGiaPhim}</span>
+              <span className='text'><StarFilled /> {props.data?.danhGiaPhim}</span>
               <span className='mg-1'>|</span>
               <span className='mg'>{props.data?.ngayChieu?.slice(0,4)}</span>
               <span className='mg-1'>|</span>
-              <span className='mg'>{props.data.phimBo===0?"Phim bộ": "Phim Lẻ"}</span>
+              <span className='mg'>{props.data?.phimBo===0?"Phim bộ": "Phim Lẻ"}</span>
               </div>
             <div className='btt'>
-              {props.data?.category?.map((val,index)=>{
+              {props.data?.theLoai?.map((val,index)=>{
                 return <div className='Button-cate'>
-                  {val?.theLoai}
+                  {val}
                 </div>
               })}
           
@@ -102,7 +102,7 @@ const InfoFilm = (props) => {
                 {props.data?.moTa?.slice(0,300)+"..."}
             </div>
             <div style={{display:"flex"}}>
-            <Link to={`/movie/play/${props.data.idPhim??2}`}>
+            <Link to={`/movie/play/${props.data?.idPhim??2}`}>
           <span className='img' onClick={{}}><img src={play} ></img></span>
               </Link>
            <span className='img' onClick={{}}><img src={favourite} ></img></span>

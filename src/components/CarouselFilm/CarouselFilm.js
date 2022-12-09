@@ -28,6 +28,8 @@ const contentStyle = {
 const CarouselFilm = () => {
 
   const [dataFilm,setDataFilm] = useState([])
+  const [data,setData] = useState([])
+  
 
   const contentStyle = {
     // height: '80%',
@@ -38,60 +40,22 @@ const CarouselFilm = () => {
   }
 
   useEffect(()=>{
-    axios.get(process.env.REACT_APP_DB_HOST+`film/show`)
+    axios.get(process.env.REACT_APP_DB_HOST+`homePage`)
           .then(response=>{
              
               setDataFilm(response.data)     
               
           })
+
+          axios.get(process.env.REACT_APP_DB_HOST+`film/show`)
+          .then(response=>{
+             
+              setData(response.data)     
+              
+          })
   },[])
   
-  // from https://react-slick.neostack.com/docs/example/custom-arrows
-  
-    const listFilm =[
-        {
-            background_image:background_img,
-            nameMovie:"I told sunset about you",
-            starScore: 9.8,
-            category:["Thái Lan","Tình bạn"],
-            describe:"(I Told Sunset About You) kể về câu chuyện của Teh (Billkin Putthipong Assaratanakul) và Oh-aew (PP Krit Amnuaydechkorn), họ đã từng là bạn thân trong quá khứ, cho đến khi một sự việc đã biến họ thành đối thủ của nhau....",
-            year:"2020",
-            quantityEp:10,
-        },
-        {
-          background_image:background_img,
-          nameMovie:"I told sunset about you",
-          starScore: 9.8,
-          category:["Thái Lan","Tình bạn"],
-          describe:"(I Told Sunset About You) kể về câu chuyện của Teh (Billkin Putthipong Assaratanakul) và Oh-aew (PP Krit Amnuaydechkorn), họ đã từng là bạn thân trong quá khứ, cho đến khi một sự việc đã biến họ thành đối thủ của nhau....",
-          year:"2020",
-          quantityEp:10,
-         },
-        {
-            background_image:background_img,
-            nameMovie:"I told sunset about you",
-            starScore: 9.8,
-            category:["Thái Lan","Tình bạn","Học đương"],
-            describe:"(I Told Sunset About You) kể về câu chuyện của Teh (Billkin Putthipong Assaratanakul) và Oh-aew (PP Krit Amnuaydechkorn), họ đã từng là bạn thân trong quá khứ, cho đến khi một sự việc đã biến họ thành đối thủ của nhau....",
-            year:"2020",
-            quantityEp:10,
-        },
-        {
-          background_image:background_img,
-          nameMovie:"I told sunset about you",
-          starScore: 9.8,
-          category:["Thái Lan","Tình bạn"],
-          describe:"(I Told Sunset About You) kể về câu chuyện của Teh (Billkin Putthipong Assaratanakul) và Oh-aew (PP Krit Amnuaydechkorn), họ đã từng là bạn thân trong quá khứ, cho đến khi một sự việc đã biến họ thành đối thủ của nhau....",
-          year:"2020",
-          quantityEp:10,
-      }
-    ]
 
-   
-
-    const onChange = (currentSlide) => {
-      console.log(currentSlide);
-    };
 
     return (
       <Carousel arrows 
@@ -102,10 +66,11 @@ const CarouselFilm = () => {
         // prevArrow={<ArrowLeftOutlined/>}
         >
       
-      {dataFilm.slice(0,4).map((value,index)=>{
+      {dataFilm["phimHay"]?.map((value,index)=>{
+        console.log(data.find((val)=>val.idPhim===value.idPhim),"gggg")
         return (
             <div key={index}>
-              <img src={value?.duongDanAnh.duongDanAnh} 
+              <img src={ process.env.REACT_APP_DB_HOST+"image/show/"+ value?.duongDanAnh} 
               style={{
                 objectFit:"cover",
                 position:"",
@@ -121,7 +86,7 @@ const CarouselFilm = () => {
                 right: "-60px",
                 top:"-280px"}}>
            <InfoFilm
-            data={value}
+            data={data.find((val)=>val.idPhim===value.idPhim)}
            />
            </div>
            

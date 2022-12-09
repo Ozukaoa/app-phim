@@ -5,6 +5,7 @@ import './Tab_Comment.scss';
 import { Button, Col, Input, Row } from 'antd';
 import Comment1 from './Comment1';
 import axios from 'axios';
+import TextArea from 'antd/lib/input/TextArea';
 
 const Tab_Comment=(props)=>{
 
@@ -16,7 +17,7 @@ const Tab_Comment=(props)=>{
         setPostComment(e.target.value)
       };
     useEffect(()=>{
-        axios.get(process.env.REACT_APP_DB_HOST+`comment/getallofone/${props.data}`)
+        axios.get(process.env.REACT_APP_DB_HOST+`comment/show/${props.data}`)
         .then(response=>{
             console.log(response,"comment")
             setListComment(response.data)
@@ -27,29 +28,32 @@ const Tab_Comment=(props)=>{
 
     const handlePost =()=>{
         let data={
-            idKhachHang:localStorage.getItem("infoUser"),
+            idNguoiDung:localStorage.getItem("infoUser"),
             idPhim:props.data,
             binhLuan:postComment,
         }
+        // setPostComment("")
 
-        axios.post(process.env.REACT_APP_DB_HOST+"comment/add", data)
-            .then(response=>{
+        axios.post(process.env.REACT_APP_DB_HOST+"comment/create", data)   
+            .then(response=>
                 console.log("tt")
-                setPostComment("")
-            })
+                
+            )
+            
     }
 
     return (
        <div className='tab_comment'>
-        <div className='bl'>Bình luận <span className='bl1'>20</span></div>
+        <div className='bl'>Bình luận <span className='bl1'></span></div>
         <hr style={{
          width:"100%", alignItems:"center",marginBottom:"10px",marginTop:"10px"
                     }}></hr>
-        <Input className='input_1' 
+        <TextArea className='input_1' 
+                rows={4}
                 placeholder='Viết bình luận' 
-                onChange={onChange}></Input>
+                onChange={onChange}></TextArea>
         
-        <Button className='but' onClick={handlePost} disabled={!localStorage.getItem("infoUser")}>Gửi</Button>
+        <div className='but' onClick={handlePost} disabled={!localStorage.getItem("infoUser")}>Gửi</div>
         
 
         <hr style={{

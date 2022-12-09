@@ -18,7 +18,7 @@ const Header = (props) => {
     const [nofi,setNofi] = useState([])
     const [key,setKey] = useState("")
     const [modalLogin,setModalLogin]= useState(false)
-    const [paint,setPaint] = useState("false")
+    const [paint,setPaint] = useState(false)
 
     const red=()=>{
         setPaint(true)
@@ -70,7 +70,7 @@ const Header = (props) => {
             setNofi(response.data)          
         })
         .then(
-            console.log(nofi,"1ike")
+            console.log(nofi,"1ik")
         )
 
             setKey(localStorage.getItem("accessToken"))
@@ -194,9 +194,9 @@ const Header = (props) => {
             <Popover placement="bottomRight"  content={
                              <div className='nofi'>
                                 {
-                                nofi.length===0?<div>Không có thông báo </div>:
+                                nofi?.length===0?<div>Không có thông báo </div>:
                                 
-                                nofi.map((val,index)=>
+                                nofi?.map((val,index)=>
                                     <div key={index} style={{width:"400px"}}>
                                        <div style={{fontSize:"18px",fontWeight:"600"}}>{val.tieuDeThongBao}</div> 
                                        <div className='tt2'>{val.noiDungThongBao.slice(0,100)+"..."}</div>

@@ -20,7 +20,9 @@ const Register = (props) => {
     const onFinish = (values) => {
         console.log('Success:', values);
         let {xacNhanMatKhau,...rest} =values;
-        rest={vaiTro:"user",...rest}
+        rest={vaiTro:"user",
+        ngaySinh:"2000/01/01"
+            ,...rest}
         axios.post(process.env.REACT_APP_DB_HOST+"register", rest)
             .then(response=>{
                 console.log(response)

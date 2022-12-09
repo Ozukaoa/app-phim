@@ -48,8 +48,8 @@ const MoviePlay =(props)=>{
 
             
         })
-
-        axios.get(process.env.REACT_APP_DB_HOST+`watchfilm/get/${localStorage.getItem("infoUser")}`)
+        if(localStorage.getItem("infoUser")){
+            axios.get(process.env.REACT_APP_DB_HOST+`watchfilm/get/${localStorage.getItem("infoUser")}`)
         .then(response=>{
             if(response.data.map((value,index)=>value.idPhim).includes(Number(props.match.params.id)))
                         {return }
@@ -70,6 +70,8 @@ const MoviePlay =(props)=>{
 
             
         })
+        }
+        
     
     },[])
     const handleLike =() =>{
@@ -156,7 +158,9 @@ const MoviePlay =(props)=>{
                
                 <div>
                     <video width="950" height="400" controls>
-                    <source src={`http://localhost:3003/apis/film/playfilm/${dataFilm.idPhim}`}></source>
+                    <source src={`http://localhost:3003/apis/film/playFilm/${props.match.params.id}
+                    
+                    `}></source>
                     </video>
                     </div>
     

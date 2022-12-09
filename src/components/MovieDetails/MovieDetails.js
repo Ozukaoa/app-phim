@@ -40,7 +40,7 @@ const MovieDetails = () => {
     }, [dispatch, imdbID])
 
     useEffect(()=>{
-        axios.get(process.env.REACT_APP_DB_HOST+`film/show/id/${imdbID}`)
+        axios.get(process.env.REACT_APP_DB_HOST+`film/show/${imdbID}`)
         .then(response=>{
             console.log(response.data,"datafilm1")
             setDataFilm(response.data)
@@ -59,9 +59,10 @@ const MovieDetails = () => {
         { label: 'Xem trailer', key: 'item-2', children: <div style={{textAlign:"center" ,fontSize:"20px"}}>Xem trailer
             <div>
       <video width="720" height="480" controls>
-      <source src={`http://localhost:3003/apis/film/playfilm/${dataFilm.idPhim}`}></source>
+      <source src={`http://localhost:3003/apis/film/playTrailer/1`} type="video/mp4"></source>
       </video>
     </div>
+    {/* ${dataFilm.idPhim} */}
         </div> },
         { label: 'Diễn viên', key: 'item-3', children: <Tab_Actor data={dataFilm?.dienVien}/> },
         { label: 'Bình luận', key: 'item-4', children: <Tab_Comment data={dataFilm?.idPhim}/> },
@@ -113,7 +114,7 @@ const MovieDetails = () => {
                             marginTop: ""
 
                         }} 
-                            src={img}></img>
+                            src={process.env.REACT_APP_DB_HOST+"image/show/"+  dataFilm?.duongDanAnh?.anhDaiDien}></img>
                         </Col>
                     </Row>
             

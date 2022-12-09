@@ -51,31 +51,34 @@ const Comment1=(props)=>{
         <span className="comment-action">{dislikes}</span>
       </span>
     </Tooltip>,
-    <span key="comment-basic-reply-to">Reply to</span>,
+    <span key="comment-basic-reply-to">Trả lời</span>,
   ];
 
     return (
        <div className='comment'>
         <Comment
         actions={actions}
-        author={<a>{
+        author={<a>
+          {/* {
           listUser.find((val,index)=>
           val.idNguoiDung === props.data.idKhachHang
           )?.tenDayDu
 
-         }</a>}
-        avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
+         } */}
+         {props.data.tenDayDu??"Ẩn Danh"}
+         </a>}
+        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" alt="Han Solo" />}
         content={
             <p>
               {props.data.binhLuan}
             </p>
         }
-        datetime={
-            <Tooltip title="2016-11-22 11:22:33">
+        // datetime={
+        //     <Tooltip title="2016-11-22 11:22:33">
 
-            <span>{props.data.ngayDangBinhLuan?.slice(0,10)}</span>
-            </Tooltip>
-        }
+        //     <div>{props.data.ngayDangBinhLuan?.slice(0,10)}</div>
+        //     </Tooltip>
+        // }
         />
         
        </div>

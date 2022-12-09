@@ -20,10 +20,10 @@ const Discovery = () => {
         axios.get(process.env.REACT_APP_DB_HOST+"genre/show")
         .then(response=>{
             console.log(response,"111")
-            setGenre(response.data.map((val)=>val.tenTheLoai))
+            setGenre(response.data.map((val)=>val))
         })
 
-        axios.get(process.env.REACT_APP_DB_HOST+"film/show")
+        axios.get(process.env.REACT_APP_DB_HOST+"user/show/listFilm")
         .then(response=>{
             console.log(response,"111")
             setFilm(response.data)
@@ -51,8 +51,8 @@ const Discovery = () => {
             <div className='flex'>
            {
             genre.map((val,index)=>
-            <div className={val===choose?"btnGenre-active":'btnGenre'}
-                onClick={()=>handleChoose(val)}>{val}</div>
+            <div className={val.idTheLoai===choose?"btnGenre-active":'btnGenre'}
+                onClick={()=>handleChoose(val.idTheLoai)}>{val.tenTheLoai}</div>
             )
            }
            </div>
@@ -62,7 +62,8 @@ const Discovery = () => {
             return  <div className='card'>
             <Link to={`/movie/${val.idPhim}`}>
             <img src={
-                val?.duongDanAnh?.duongDanAnh??
+                process.env.REACT_APP_DB_HOST+"image/show/"+
+                val?.anhMota[1]??
             imgNull}
                  alt={index} 
                  height={250}
@@ -75,7 +76,7 @@ const Discovery = () => {
                     </Link>
                     <div>Năm: {val.ngayChieu?.slice(0,4)}</div>
                     <div>Đạo diễn :</div>
-                    <div>Diễn viên : {val.dienVien[0]?.tenDienVien}, {val.dienVien[1]?.tenDienVien}</div>
+                    {/* <div>Diễn viên : {val.dienVien[0]?.tenDienVien}, {val.dienVien[1]?.tenDienVien}</div> */}
                     <Link to={`/movie/play/${val?.idPhim}`}>
                     <div className='xemngay'>Xem ngay</div>
                     </Link>

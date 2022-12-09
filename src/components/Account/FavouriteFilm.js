@@ -67,7 +67,7 @@ const FavouriteFilm =()=>{
                             <div className="khungImg">
                                 {!form?<></>:<div className="delete" onClick={()=>handleDeleteFilm(val?.idPhim)}><DeleteOutlined /></div>}
                                 <Link to={`/movie/${val?.idPhim}`}>
-                                <img src={val.duongDanAnh.duongDanAnh}></img>
+                                <img src={process.env.REACT_APP_DB_HOST+"image/show/"+ val?.duongDanAnh}></img>
                                 </Link>
                                 {val.tenPhim}
                             </div>

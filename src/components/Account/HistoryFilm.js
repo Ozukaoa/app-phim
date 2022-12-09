@@ -16,12 +16,11 @@ const HistoryFilm =()=>{
             setDataFilmHis(response.data.map((val,index)=>val.idPhim))            
         })
         .then(
-            console.log(dataFilmHis,"1ike")
+            console.log(dataFilmHis,"1ike1")
         )
 
         axios.get(process.env.REACT_APP_DB_HOST+`film/show`)
         .then(response=>{
-            console.log(dataFilm)
             console.log(dataFilm.filter(val=>{
                 console.log(dataFilmHis.includes(val.idPhim))
                 return true
@@ -68,7 +67,7 @@ const HistoryFilm =()=>{
                          {!form?<></>
                          :<div className="delete" onClick={()=>handleDeleteFilm(val?.idPhim)}><DeleteOutlined /></div>}
                                 <Link to={`/movie/play/${val?.idPhim}`}>
-                                <img src={val.duongDanAnh.duongDanAnh}></img>
+                                <img src={process.env.REACT_APP_DB_HOST+"image/show/"+ val?.duongDanAnh}></img>
                                 </Link>
                                 {val.tenPhim}
                             </div>

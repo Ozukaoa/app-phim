@@ -10,6 +10,7 @@ const RequestFilm =()=>{
         let data ={
             idKhachHangYeuCau:localStorage.getItem("infoUser"),
             trangThai:"dangCho",
+            ngayYeuCau:"2022-11-21",
             ...values
 
         }

@@ -42,7 +42,7 @@ const Search = () => {
     },[localStorage.getItem("search")])
   
     useEffect(()=>{
-        axios.get(process.env.REACT_APP_DB_HOST+`film/show`)
+        axios.get(process.env.REACT_APP_DB_HOST+`user/show/listFilm`)
         .then(response=>{
             setImage(response.data)
         })
@@ -50,6 +50,7 @@ const Search = () => {
 
     return (
         <div className='searchPage'>
+            
             <h2>Dựa theo từ khóa "{localStorage.getItem("search")} " bạn nhập, Doom đã giúp bạn tìm thấy các kết quả tìm kiếm sau đây</h2>
             <Row>
             <Col span={18}>
@@ -62,7 +63,7 @@ const Search = () => {
                                     <div className='card'>
                                         <Link to={`/movie/${val.idPhim}`}>
                                         <img src={
-                                            val?.duongDanAnh?.duongDanAnh??
+                                          process.env.REACT_APP_DB_HOST+"image/show/"+  val?.anhMota[1]??
                                         imgNull}
                                              alt={index} 
                                              height={250}
@@ -75,7 +76,7 @@ const Search = () => {
                                                 </Link>
                                                 <div>Năm: {val.ngayChieu?.slice(0,4)}</div>
                                                 <div>Đạo diễn :</div>
-                                                <div>Diễn viên : {val.dienVien[0]?.tenDienVien}, {val.dienVien[1]?.tenDienVien}</div>
+                                                {/* <div>Diễn viên : {val.dienVien[0]?.tenDienVien}, {val.dienVien[1]?.tenDienVien}</div> */}
                                                 <Link to={`/movie/${val?.idPhim}`}>
                                                 <div className='xemngay'>Xem ngay</div>
                                                 </Link>

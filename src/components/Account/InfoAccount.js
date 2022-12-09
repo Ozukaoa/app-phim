@@ -66,7 +66,7 @@ const InfoAccount =(props) =>{
                 //    
                  
                     notification.success({
-                    message:"Cập thành công"
+                    message:"Cập nhật thành công"
                 })
                 closeModal()
 
@@ -77,7 +77,7 @@ const InfoAccount =(props) =>{
             
             .catch(error =>{
                 notification.error({
-                    message:"Tài khoản hoặc mật khẩu sai"
+                    message:"Cập nhật thất bại"
                 })
             })
       };
@@ -307,7 +307,7 @@ const InfoAccount =(props) =>{
                 </Form.Item>
                 <Form.Item
                 >
-                    <Button style={{marginLeft:"160px", marginTop:"20px"}} htmlType="submit">Đăng kí</Button>
+                    <Button style={{marginLeft:"160px", marginTop:"20px"}} htmlType="submit">Xác nhận</Button>
                 </Form.Item>
         </Form>
     

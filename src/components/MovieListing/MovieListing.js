@@ -36,9 +36,9 @@ const MovieListing = () => {
 
                 <div className='movie-container'>
                     <Slider {...settings}>
-                        {renderMovies === "True" ? dataHome["phimHay"]?.map((movie, index) => {
+                        {dataHome["phimHay"]?.map((movie, index) => {
                             return < MovieCard key={index} data={movie} />
-                        }) : <div className='movies-error' ><h2>{movies.Error}</h2></div>}
+                        }) }
                     </Slider>
                 </div>
 
@@ -48,9 +48,9 @@ const MovieListing = () => {
 
                 <div className='movie-container'>
                     <Slider {...settings}>
-                        {renderMovies === "True" ? dataHome["phimHot"]?.map((movie, index) => {
+                        {dataHome["phimHot"]?.map((movie, index) => {
                             return < MovieCard key={index} data={movie} />
-                        }) : <div className='movies-error' ><h2>{movies.Error}</h2></div>}
+                        }) }
                     </Slider>
                 </div>
 
@@ -60,9 +60,21 @@ const MovieListing = () => {
 
                 <div className='movie-container'>
                     <Slider {...settings}>
-                        {renderMovies === "True" ? dataHome["phimMoi"]?.map((movie, index) => {
+                        { dataHome["phimMoi"]?.map((movie, index) => {
                             return < MovieCard key={index} data={movie} />
-                        }) : <div className='movies-error' ><h2>{movies.Error}</h2></div>}
+                        }) }
+                    </Slider>
+                </div>
+
+            </div>
+            <div className="movie-list">
+                <h2>Phim Lẻ</h2>
+
+                <div className='movie-container'>
+                    <Slider {...settings}>
+                        { dataHome["phimMoi"]?.map((movie, index) => {
+                            return < MovieCard key={index} data={movie} />
+                        }) }
                     </Slider>
                 </div>
 

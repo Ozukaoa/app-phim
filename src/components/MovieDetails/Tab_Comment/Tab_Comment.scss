@@ -9,8 +9,43 @@
     }
 
     .input_1{
-        height: 35px
+        // height: 35px
     }
+
+    .but{
+        
+        position: initial;
+        // float:right;
+        margin-top: 1%;
+        margin-left: 85%;
+        height: 40px;
+        width: 118px;
+        background-color: #DE5454;
+        border: none;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+    
+
+    }
+
+    .but:hover{
+        
+        position: initial;
+        // float:right;
+        margin-top: 1%;
+        margin-left: 85%;
+        height: 40px;
+        width: 118px;
+        background-color: #660909;
+        border: none;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+    
+
+    }
+
 
     .ant-btn{
         position: initial;
@@ -57,4 +92,6 @@
     padding: 10px;
     font-size: 18px;
     }
+
+    
 }
