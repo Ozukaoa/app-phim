@@ -104,7 +104,7 @@ const MoviePlay =(props)=>{
 
 
     useEffect(()=>{
-        axios.get(process.env.REACT_APP_DB_HOST+`film/show/id/${props.match.params.id}`)
+        axios.get(process.env.REACT_APP_DB_HOST+`film/show/${props.match.params.id}`)
         .then(response=>{
             console.log(response,"111")
             setDataFilm(response.data)

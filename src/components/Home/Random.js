@@ -2,42 +2,30 @@ import React, { useEffect, useState } from 'react'
 
 import MovieListing from '../MovieListing/MovieListing';
 import './Discovery.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchAsyncMovies, fetchAsyncShows } from '../../features/movies/movieSlice';
 import CarouselFilm from '../CarouselFilm/CarouselFilm';
 import axios from 'axios';
 import imgNull from "../../images/film/imgNull.png"
 import { Link } from 'react-router-dom';
-import { store } from '../../features/store';
-import { getAllMovies, getAllMovies1, getFilm } from '../../features/movies/allReduce';
 
 
 
-const Discovery = () => {
+const Random = () => {
     const [choose,setChoose] =useState("")
     const [genre,setGenre] = useState([])
     const [film,setFilm] =useState([])
     const [filmFilt,setFilmFilt] =useState([])
-
-    const dispatch = useDispatch()
-    const movies = useSelector(getAllMovies1)
-    useEffect(()=>{
-        dispatch(getFilm())
-        console.log(movies,"movi")
-    }
-    ,[])
-
     useEffect(()=>{
         axios.get(process.env.REACT_APP_DB_HOST+"genre/show")
         .then(response=>{
-        
-        
+            console.log(response,"111")
             setGenre(response.data.map((val)=>val))
         })
 
         axios.get(process.env.REACT_APP_DB_HOST+"user/show/listFilm")
         .then(response=>{
-           
+            console.log(response,"111")
             setFilm(response.data)
         })
     },[])
@@ -54,9 +42,7 @@ const Discovery = () => {
     },[choose])
 
     const handleChoose =(val)=>{
-        console.log(val,"11") 
-        console.log(movies,"movi")
-
+        console.log(val,"11")
         setChoose(val)
     }
 
@@ -114,4 +100,4 @@ const Discovery = () => {
     )
 }
 
-export default Discovery
+export default Random

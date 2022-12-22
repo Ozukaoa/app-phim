@@ -36,7 +36,8 @@ const Tab_Comment=(props)=>{
 
         axios.post(process.env.REACT_APP_DB_HOST+"comment/create", data)   
             .then(response=>
-                console.log("tt")
+                console.log("tt"),
+                setPostComment("")
                 
             )
             

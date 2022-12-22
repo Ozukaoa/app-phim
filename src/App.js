@@ -17,6 +17,7 @@ import MoviePlay from './components/MoviePlay/MoviePlay';
 import Sidebar from './components/Account/Sidebar';
 import Search from './components/Home/Search';
 import Discovery from './components/Home/Discovery';
+import Random from './components/Home/Random';
 
 
 
@@ -35,6 +36,7 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/discovery" component={Discovery} />
+            <Route exact path="/random" component={Random} />
             <Route exact path="/search" component={Search} />
             <Route exact path="/movie/:imdbID" component={MovieDetails} />
             <Route exact path="/movie/play/:id" component={MoviePlay} />

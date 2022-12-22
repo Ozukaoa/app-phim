@@ -1,32 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllMovies, getAllShows } from '../../features/movies/movieSlice';
 import MovieCard from '../MovieCard/MovieCard';
 import './MovieListing.scss';
 import { settings } from '../../common/setting.js';
-
+import {
+    LoadingOutlined
+  } from '@ant-design/icons';
 import Slider from "react-slick";
 import axios from 'axios';
+import { getAllMovies1, getFilmShow } from '../../features/movies/allReduce';
 
 const MovieListing = () => {
-
+ const dispatch = useDispatch();
     const [dataHome,setDataHome] =useState([])
     
 
     useEffect(()=>{
+        // dispatch(getFilmShow())
         axios.get(process.env.REACT_APP_DB_HOST+"homePage")
         .then(response=>{
-            console.log(response,"111")
+            console.log(response,"")
             setDataHome(response.data)
+            console.log(movies,"tes")
+            console.log(movie,"all_test")
         })
     },[])
 
+    const movie=useSelector(getAllMovies1)
     // for movies
     const movies = useSelector(getAllMovies)
 
     let renderMovies = movies.Response;
     // for shows
     const shows = useSelector(getAllShows)
+    console.log(shows,"show")
+    console.log(movie,"movie")
     let renderShows = shows.Response;
 
     return (
@@ -36,12 +45,20 @@ const MovieListing = () => {
 
                 <div className='movie-container'>
                     <Slider {...settings}>
-                        {dataHome["phimHay"]?.map((movie, index) => {
-                            return < MovieCard key={index} data={movie} />
-                        }) }
+                    {
+                        
+                            
+                        // dataHome["phimHay"]
+                  movie.length?
+                        movie.map((movie, index) => 
+                            < MovieCard key={index} data={movie}/>
+                          
+                        ):<div><LoadingOutlined /></div>
+                    }
                     </Slider>
-                </div>
+                
 
+            </div>
             </div>
             <div className="movie-list">
                 <h2>Phim Hot</h2>

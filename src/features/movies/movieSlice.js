@@ -16,6 +16,7 @@ export const fetchAsyncShows = createAsyncThunk('movies/fetchAsyncShows', async 
 // asyncthunk for show and movie details-This is an async action creator
 export const fetchAsyncMovieOrShowDetail = createAsyncThunk('movies/fetchAsyncMovieOrShowDetail', async (id) => {
     const response = await movieAPI.get(`?apikey=${APIKEY}&i=${id}&plot=full`)
+    
     return response.data;
 });
 export const dataHomePage = axios.get(process.env.REACT_APP_DB_HOST+"homePage")

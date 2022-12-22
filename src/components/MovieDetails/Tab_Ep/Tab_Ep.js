@@ -1,7 +1,7 @@
 import React from "react";
 import img from "../../../images/film/image2.png"
 import './Tab_Ep.scss';
-const Tab_Ep =()=>{
+const Tab_Ep =(props)=>{
     const listmovie =[
         {
             image:img,
@@ -41,7 +41,7 @@ const Tab_Ep =()=>{
             {listmovie.map((value,index)=>{
                 return (
                     <span>
-                        <img style={{marginRight:"10px"}} src={value.image}></img>
+                        <img style={{marginRight:"10px", height:"150px"}} src={process.env.REACT_APP_DB_HOST+"image/show/"+props.data.duongDanAnh?.anhDaiDien}></img>
                         <div>Tập {value.ep}</div>
                     </span>
                 )

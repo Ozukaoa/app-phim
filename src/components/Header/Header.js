@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { Link, useHistory } from "react-router-dom";
 import { fetchAsyncMovies, fetchAsyncShows } from '../../features/movies/movieSlice';
 import user from '../../images/user.png';
 import logo from '../../images/logo/logo.png';
-import {CaretDownOutlined,SearchOutlined,HistoryOutlined,BellFilled,UserOutlined} from '@ant-design/icons';
+import {CaretDownOutlined,SearchOutlined,HistoryOutlined,BellFilled,UserOutlined,DropboxOutlined,CodeSandboxOutlined} from '@ant-design/icons';
 import './Header.scss';
 import { Modal, Popover } from 'antd';
 import Login from '../Login/Login';
@@ -19,7 +19,13 @@ const Header = (props) => {
     const [key,setKey] = useState("")
     const [modalLogin,setModalLogin]= useState(false)
     const [paint,setPaint] = useState(false)
+    const [random,setRandom] =useState(0)
 
+    const inputRef = useRef()
+
+    const focus=()=>{
+        inputRef.current.focus()
+    }
     const red=()=>{
         setPaint(true)
     }
@@ -76,6 +82,28 @@ const Header = (props) => {
             setKey(localStorage.getItem("accessToken"))
     },[])
 
+    // useEffect(()=>{
+    //     axios.get(process.env.REACT_APP_DB_HOST+`user/randomize`)
+    //     .then(response=>{
+    //         setRandom(response.data)          
+    //     })
+    //     .then(
+    //         console.log(nofi,"1ik")
+    //     )
+
+    //         setKey(localStorage.getItem("accessToken"))
+    // },[])
+
+    const handleRandom =()=>{
+        axios.get(process.env.REACT_APP_DB_HOST+`user/randomize`)
+        .then(response=>{
+            setRandom(response?.data.idPhim)          
+        })
+        .then(
+            history.push(`/movie/${random}`),
+            // history.listen(`/movie/${random}`)
+        )
+    }
 
     const handleChange = (event) => {
         const { value } = event.target;
@@ -107,29 +135,6 @@ const Header = (props) => {
     localStorage.removeItem("infoUser")
   }
 
-    const contentLogin = (
-        <>
-             <div>
-                <a className='click' onClick={openLogin}>Đăng nhập</a>
-            </div>
-        </>
-    )
-    const contentLogout =(
-        <>
-            <div>
-            
-            <Link to={`/account`} onClick={hide} >
-              <a className='click' onClick={white}>Thông tin tài khoản</a>
-              </Link>
-              </div>
-              <div>
-              <Link to={`/`} onClick={hide}>
-                <a className='click' onClick={LogOut}>Đăng xuất</a>
-                </Link>
-            </div>
-        </>
-    )
-        
 
     
 
@@ -179,17 +184,26 @@ const Header = (props) => {
 
             <div className="search-bar">
                 <form onSubmit={submitHandler}>
-                    <input type="text" value={term} placeholder='Nhập tên phim' name="search" onChange={handleChange} />
+                    <input type="text"
+                     value={term} 
+                     placeholder='Nhập tên phim' 
+                     name="search" 
+                     onChange={handleChange} 
+                     ref={inputRef}
+                     
+                     />
                     <span className='search' >
-                        | < SearchOutlined style={{cursor:"pointer"}}/>
+                        | < SearchOutlined style={{cursor:"pointer"}} onClick={focus}/>
                     </span>
                     
                     {/* <button type='submit'> <i className="fa fa-search"></i> </button> */}
                 </form>
             </div>
-
             <div className='button-function'>
-            <HistoryOutlined />
+            {/* <Link to={`/movie/${random}`}> */}
+           
+            <CodeSandboxOutlined onClick={handleRandom} />
+            {/* </Link> */}
 
             <Popover placement="bottomRight"  content={
                              <div className='nofi'>
@@ -209,7 +223,7 @@ const Header = (props) => {
                     } 
                     trigger={localStorage.getItem("accessToken")?"click":""}
                     >
-            <BellFilled className='button'/>
+            <BellFilled className='button animation1'/>
              </Popover>
 
             <UserOutlined className='button' 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { fetchAsyncMovieOrShowDetail } from '../../features/movies/movieSlice'
 import { useSelector } from 'react-redux'
 import { movieOrShowDetails } from '../../features/movies/movieSlice'
@@ -19,7 +19,7 @@ import axios from 'axios'
 
 
 const MovieDetails = () => {
-
+    const history = useHistory();
     const [dataFilm,setDataFilm] = useState({})
     const [img,setImg]=useState("")
 
@@ -27,17 +27,17 @@ const MovieDetails = () => {
     // later callling after useEffect
     const dispatch = useDispatch();
     const details = useSelector(movieOrShowDetails)
-    console.log(details)
+    console.log(details,"detail")
     // the above part
 
     useEffect(() => {
         
-        console.log(imdbID)
+        console.log(imdbID,"param")
         dispatch(fetchAsyncMovieOrShowDetail(imdbID))
         return () => {
             dispatch(removeMovieOrShow())
         }
-    }, [dispatch, imdbID])
+    }, [imdbID])
 
     useEffect(()=>{
         axios.get(process.env.REACT_APP_DB_HOST+`film/show/${imdbID}`)
@@ -48,14 +48,14 @@ const MovieDetails = () => {
         })
         window.scrollTo(0, 0)
 
-    },[])
+    },[imdbID])
 
     const onChange = (key) => {
         console.log(key);
       };
 
       const items = [
-        { label: 'Chọn tập', key: 'item-1', children: (<Tab_Ep/>) }, // remember to pass the key prop
+        { label: 'Chọn tập', key: 'item-1', children: (<Tab_Ep data={dataFilm}/>) }, // remember to pass the key prop
         { label: 'Xem trailer', key: 'item-2', children: <div style={{textAlign:"center" ,fontSize:"20px"}}>Xem trailer
             <div>
       <video width="720" height="480" controls>

@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { fetchAsyncMovies, fetchAsyncShows } from '../../features/movies/movieSlice';
 import CarouselFilm from '../CarouselFilm/CarouselFilm';
 import axios from 'axios';
+import { getFilmShow } from '../../features/movies/allReduce';
 
 
 
@@ -21,6 +22,7 @@ const Home = () => {
     useEffect(() => {
         dispatch(fetchAsyncMovies(defaultMovie))
         dispatch(fetchAsyncShows(defaultShow))
+        dispatch(getFilmShow())
         dataHomePage()
     }, [])
 

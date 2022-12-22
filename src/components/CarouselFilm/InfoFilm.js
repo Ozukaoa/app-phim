@@ -103,9 +103,9 @@ const InfoFilm = (props) => {
             </div>
             <div style={{display:"flex"}}>
             <Link to={`/movie/play/${props.data?.idPhim??2}`}>
-          <span className='img' onClick={{}}><img src={play} ></img></span>
+          <span className='img'><img src={play} ></img></span>
               </Link>
-           <span className='img' onClick={{}}><img src={favourite} ></img></span>
+           <span className='img' ><img src={favourite} ></img></span>
            </div>
           
             

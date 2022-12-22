@@ -13,6 +13,7 @@ import {ArrowRightOutlined,
         StarFilled,
       } from '@ant-design/icons';
 import InfoFilm from './InfoFilm';
+import {useMutation, useQuery} from "react-query";
 import axios from 'axios';
 const contentStyle = {
   margin: 0,
@@ -28,7 +29,7 @@ const contentStyle = {
 const CarouselFilm = () => {
 
   const [dataFilm,setDataFilm] = useState([])
-  const [data,setData] = useState([])
+  const [data1,setData] = useState([])
   
 
   const contentStyle = {
@@ -39,7 +40,17 @@ const CarouselFilm = () => {
     background: '#364d79'
   }
 
+ async function loadCarouse(){
+  const res = await axios.get(process.env.REACT_APP_DB_HOST+`homePage`)
+  console.log(res.data,"query")
+  return res
+ }
+
+
+  const {data:dataCarouse,isLoading} = useQuery(["dataCarouse"],loadCarouse)
+
   useEffect(()=>{
+    console.log(dataCarouse,"list")
     axios.get(process.env.REACT_APP_DB_HOST+`homePage`)
           .then(response=>{
              
@@ -66,8 +77,14 @@ const CarouselFilm = () => {
         // prevArrow={<ArrowLeftOutlined/>}
         >
       
-      {dataFilm["phimHay"]?.map((value,index)=>{
-        console.log(data.find((val)=>val.idPhim===value.idPhim),"gggg")
+      {isLoading
+      ?<div>Đang load</div>
+      : 
+      !dataCarouse
+      ?<div>error;</div>
+      :
+      dataCarouse.data["phimHay"]?.map((value,index)=>{
+        console.log(data1.find((val)=>val.idPhim===value.idPhim),"gggg")
         return (
             <div key={index}>
               <img src={ process.env.REACT_APP_DB_HOST+"image/show/"+ value?.duongDanAnh} 
@@ -86,7 +103,7 @@ const CarouselFilm = () => {
                 right: "-60px",
                 top:"-280px"}}>
            <InfoFilm
-            data={data.find((val)=>val.idPhim===value.idPhim)}
+            data={data1.find((val)=>val.idPhim===value.idPhim)}
            />
            </div>
            
